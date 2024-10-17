@@ -1,0 +1,8 @@
+<mat-toolbar style="display: flex; justify-content: space-between; align-items: center;">
+    <span>My Budget Tracker</span>
+    <div class="card flex justify-content-center">
+        <p-menu #menu [model]="items" [popup]="true" />
+        <p-button (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
+    </div>
+
+</mat-toolbar>

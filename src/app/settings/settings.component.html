@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Settings</h2>
+<mat-dialog-content class="mat-typography">
+    <div>
+        <form action="">
+
+          <label for="Balance">Enter Balance</label>
+          <input type="text" id="Balance" name="Balance" [(ngModel)]="totalBalance" placeholder="Balance">
+      
+          <label for="salery">Enter Salery</label>
+          <input type="text" id="salery" name="salery" [(ngModel)]="salery"placeholder="Salery">
+      
+          <label for="payPeriod">Pay Period</label>
+          <select id="payPeriod" name="payPeriod" [(ngModel)]="payPeriod">
+            <option value="Daily">Daily (240 pay periods a year)</option>
+            <option value="Weekly">Weekly (52 pay periods a year)</option>
+            <option value="Biweekly">Biweekly (26 pay periods a year)</option>
+            <option value="Semi-monthly">Semi-monthly (24 pay periods a year)</option>
+            <option value="Monthly">Monthly (12 pay periods a year)</option>
+            <option value="ten">10 pay periods a year</option>
+            <option value="thirteen">13 pay periods a year</option>
+            <option value="twentytwo">22 pay periods a year</option>
+            <option value="Weekly2">Weekly (53 pay periods a year)</option>
+            <option value="Biweekly2">Biweekly (27 pay periods a year)</option>
+          </select>
+
+          <label for="reset">Reset Period</label>
+          <select id="reset" name="reset" [(ngModel)]="resetPeriod">
+            <option value="Daily">Daily (Start of everyday)</option>
+            <option value="Weekly">Weekly (Start of every Week)</option>
+            <option value="Monthly">Monthly (Start of evert month)</option>
+            <option value="Yearly">Yearly (Start of every year)</option>
+          </select>
+
+        
+          <!-- <input type="submit" value="Submit"> -->
+        </form>
+      </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial  (click)="saveSettings() ">Save</button>
+</mat-dialog-actions>
+

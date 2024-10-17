@@ -1,0 +1,44 @@
+<mat-card class="example-card" appearance="outlined" style="height: 100%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)" >
+    <mat-card-header style="display: flex; justify-content: space-between; align-items: center;">
+        <mat-card-title>Transaction History</mat-card-title>
+        <p-dropdown 
+        [options]="categoryValue" 
+        [(ngModel)]="selectedCategory"
+        [checkmark]="true"  
+        optionLabel="title" 
+        [showClear]="true"
+        [filter]="true" 
+        [style]="{ width: '15rem' }" 
+        placeholder="Select a Category">
+        </p-dropdown>
+        <mat-icon style="cursor: pointer;"  (click)="openDialog()">add</mat-icon>
+      </mat-card-header>
+    <mat-card-content>
+        <p-table 
+        [value]="transactionValue"
+        [tableStyle]="{'min-width': '50rem'}" [scrollable]="true" scrollHeight="400px">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Date</th>
+                    <th>Desciption</th>
+                    <th>Category</th>
+                    <th>Spent</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-transactions >
+                <tr>
+                    <td>{{transactions.date}}</td>
+                    <td>{{transactions.description}}</td>
+                    <td>{{transactions.transactionCategory}}</td>
+                    <td>{{transactions.spent}}</td>
+                    <td><mat-icon style="cursor: pointer;" (click)="deleteTransaction(transactions.id, transactions.transactionCategory,transactions.spent )">delete</mat-icon></td>
+                </tr>
+            </ng-template>
+    </p-table>
+    </mat-card-content>
+    <!-- <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions> -->
+  </mat-card>

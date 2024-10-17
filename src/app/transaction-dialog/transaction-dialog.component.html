@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Add Transaction</h2>
+<mat-dialog-content class="mat-typography">
+    <div>
+        <form action="">
+
+          <label for="date">Enter Date</label>
+          <input type="text" id="date" name="date" [(ngModel)]="date" placeholder="yyyy/mm/dd">
+      
+          <label for="description">Enter description</label>
+          <input type="text" id="description" name="description" [(ngModel)]="description"placeholder="Description...">
+      
+          <label for="category">Category</label>
+          <select id="category" name="category" [(ngModel)]="selectedCategory">
+            <option *ngFor="let category of categoryValue" [value]="category.title">
+              {{ category.title }} <!-- This accesses the title property -->
+            </option>
+          </select>
+
+          <label for="spent">Enter amount spent</label>
+          <input type="text" id="spent" name="spent"  [(ngModel)]="spent" placeholder="Enter amount">
+        
+          <!-- <input type="submit" value="Submit"> -->
+        </form>
+      </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="addTransaction(selectedCategory) ">Add</button>
+</mat-dialog-actions>

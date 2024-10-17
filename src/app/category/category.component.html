@@ -1,0 +1,28 @@
+<mat-card class="example-card" appearance="outlined" style="height: 100%;box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+    <mat-card-header style="display: flex; justify-content: space-between; align-items: center;" >
+      <mat-card-title>Category</mat-card-title>
+      <mat-icon style="cursor: pointer;" (click)="openDialog()">add</mat-icon>
+    </mat-card-header>
+    <mat-card-content style="height: 30rem;">
+      <p-table [value]="categoryValue" [tableStyle]="{ 'min-width': '25rem'}" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Title </th>
+                <th>Total </th>
+                <th>Spent </th>
+                <th>Remaining </th>
+                <th> </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-category>
+            <tr>
+                <td>{{category.title}}</td>
+                <td>${{category.total}}</td>
+                <td>$ -{{category.spent}}</td>
+                <td>${{category.remaining}}</td>
+                <td><mat-icon style="cursor: pointer;" (click)="openEditCatDialog(category)">edit</mat-icon></td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </mat-card-content> 
+  </mat-card>

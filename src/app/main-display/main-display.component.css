@@ -1,0 +1,36 @@
+mat-grid-tile {
+    /* Make the tile a flex container to align and resize content */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center;     /* Center content vertically */
+  
+  }
+  
+  .tile-content {
+    width: 100%;   /* Ensure content uses the full width of the tile */
+
+    word-wrap: break-word; /* Ensure long words break and don’t overflow */
+    padding: 10px;   /* Add some padding to avoid text sticking to the edges */
+    box-sizing: border-box;  /* Include padding in the element's total width/height */
+
+  }
+  .total-money-content {
+    width: 100%;   /* Ensure content uses the full width of the tile */
+
+    word-wrap: break-word; /* Ensure long words break and don’t overflow */
+    padding: 10px;   /* Add some padding to avoid text sticking to the edges */
+    box-sizing: border-box;  /* Include padding in the element's total width/height */
+
+  }
+
+  mat-grid-tile {
+    display: grid;
+    place-items: center; /* Center content horizontally and vertically */
+    padding: 10px;
+  }
+  
+  .tile-content {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
