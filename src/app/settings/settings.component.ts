@@ -12,8 +12,8 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrl: './settings.component.css'
 })
 export class SettingsComponent {
-  userSettings: AllBudget[]  = allBudgetValue;  // This contains the data from the DB (mock data)
-  categoryValue: CategoryList[]  = allBudgetValue[0].category;
+  userSettings: AllBudget  = allBudgetValue;  // This contains the data from the DB (mock data)
+  categoryValue: CategoryList[]  = allBudgetValue.category;
   selectedCategory: any; // holds selected category
   allbudget?: AllBudget;  // This is another variable you may want to initialize
 
@@ -23,13 +23,13 @@ export class SettingsComponent {
   resetPeriod!: string
 
   saveSettings() {
-    if (this.userSettings[0].totalBalance != 0 && this.userSettings[0].totalSpent != 0 ) { // change setting when already configured 
-      this.userSettings[0].totalBalance = parseFloat(this.totalBalance)
-      this.userSettings[0].salery = parseFloat(this.salery)
+    if (this.userSettings.totalBalance != 0 && this.userSettings.totalSpent != 0 ) { // change setting when already configured 
+      this.userSettings.totalBalance = parseFloat(this.totalBalance)
+      this.userSettings.salery = parseFloat(this.salery)
     }
     else {
 
-      this.userSettings.push({id: this.userSettings.length-1, totalBalance: parseFloat(this.totalBalance), salery: parseFloat(this.salery), totalSpent: 0, payPeriod: this.payPeriod, payReset: this.resetPeriod, category: [] })
+     // this.userSettings.push({id: this.userSettings.length-1, totalBalance: parseFloat(this.totalBalance), salery: parseFloat(this.salery), totalSpent: 0, payPeriod: this.payPeriod, payReset: this.resetPeriod, category: [] })
       console.log(this.userSettings)
     }
   }

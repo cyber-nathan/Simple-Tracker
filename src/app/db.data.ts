@@ -1,7 +1,7 @@
 import { AllBudget } from "./interface"
 
 
-export let allBudgetValue: AllBudget[] = [
+export let allBudgetValue: AllBudget = 
     {
         id: 0,
         totalBalance: 15700,
@@ -42,7 +42,6 @@ export let allBudgetValue: AllBudget[] = [
 
         }
     
-    ]  
+    ]
     }
 
-]

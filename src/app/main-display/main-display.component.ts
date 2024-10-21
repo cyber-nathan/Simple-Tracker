@@ -30,11 +30,13 @@ export class MainDisplayComponent {
   // ];
 
   private mockapi: MockApiService = inject (MockApiService)
-  overallMoney = allBudgetValue;  // This contains the data from the DB (mock data)
-  allbudget?: AllBudget;  // This is another variable you may want to initialize
-  categoryValue: CategoryList[]  = allBudgetValue[0].category;
+  overallMoney!: AllBudget;  // This contains the data from the DB (mock data)
+  //allbudget?: AllBudget;  // This is another variable you may want to initialize
+  //categoryValue: CategoryList[]  = allBudgetValue.category;
   constructor() {
-    
+    this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
+      this.overallMoney = value
+    });
   }
 
   // ngOnInit(): void {

@@ -8,46 +8,45 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { allBudgetValue } from '../db.data';
-import { AllBudget } from '../interface';
+import { AllBudget, CategoryList } from '../interface';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MockApiService } from '../service/mock-api.service';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FloatLabelModule } from 'primeng/floatlabel';
 @Component({
   selector: 'app-edit-category',
   standalone: true,
-  imports: [MatInputModule, MatFormFieldModule, FormsModule, MatDialogModule, MatButtonModule, InputTextModule, MatSelectModule],
+  imports: [MatInputModule, MatFormFieldModule, FormsModule, MatDialogModule, MatButtonModule, InputTextModule, MatSelectModule, InputNumberModule, FloatLabelModule],
   templateUrl: './edit-category.component.html',
   styleUrl: './edit-category.component.css'
 })
 export class EditCategoryComponent {
   readonly dialogRef = inject(MatDialogRef<EditCategoryComponent>);
-  categoryValue = allBudgetValue[0].category;  // This contains the data from the DB (mock data)
+  readonly data = inject<CategoryList>(MAT_DIALOG_DATA);
+  categoryValue = allBudgetValue.category;  // This contains the data from the DB (mock data)
   allbudget?: AllBudget;  // This is another variable you may want to initialize
 
-  editTitle!: string
-  editTotal!: string
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
-
-
-
-  addEdit() {
-    if (this.editTitle != undefined) {
-      this.data.title = this.editTitle
-      console.log("edit total", this.editTotal)
-      
-    }
-
-    if (!isNaN(parseFloat(this.editTotal))) {
-      this.data.remaining = this.data.remaining + (parseFloat(this.editTotal) - this.data.total)
-      this.data.total = this.editTotal
-    }
-
+  editTitle: string = this.data.title
+  editTotal: number = this.data.total 
+  private mockapi: MockApiService = inject (MockApiService)
+  
+  constructor() {
+    this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
+      this.categoryValue = value.category
+    });
     console.log(this.data)
+  }
+
+
+
+  edit() { 
+    this.mockapi.editCat(this.data.id, this.editTitle, this.editTotal)
 
   }
 
-  deleteCat(id: number) {
-    this.categoryValue = this.categoryValue.filter(category => category.id !== id)
-    this.dialogRef.close(this.categoryValue);
-    console.log(this.categoryValue)
+  deleteCat() {
+    this.mockapi.deleteCat(this.data.id)
+
   }
 
 }

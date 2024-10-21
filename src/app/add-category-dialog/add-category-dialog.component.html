@@ -1,17 +1,20 @@
 <h2 mat-dialog-title>Add Category</h2>
-<mat-dialog-content class="mat-typography">
-    <div>
-        <form>
+<mat-dialog-content class="mat-typography" style="width: 100%;">
+  <div style="display: flex; gap: 30px; padding: 20px 0px; flex-direction: column; width: 50%;">
 
-          <label for="title">Title</label>
-          <input type="text" id="title" name="title" [(ngModel)]="title" placeholder="ex: Rent">
-      
+    <p-floatLabel>
+      <input pInputText id="title" [(ngModel)]="title" />
+      <label for="title">Title</label>
+  </p-floatLabel>
+
+        <p-floatLabel>
+          
+          <p-inputNumber inputId="totalAmount" [(ngModel)]="totalAmount"  [min]="0"/>
           <label for="totalAmount"> Total Amount</label>
-          <input type="text" id="totalAmount" name="totalAmount"  [(ngModel)]="totalAmount" placeholder="Enter amount">
-        
-          <!-- <input type="submit" value="Submit"> -->
-        </form>
-      </div>
+      </p-floatLabel>
+      
+        <!-- <input type="submit" value="Submit"> -->
+    </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

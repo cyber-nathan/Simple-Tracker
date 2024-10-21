@@ -11,6 +11,7 @@ import { AllBudget, CategoryList, TransactionList } from '../interface';
 import { allBudgetValue } from '../db.data';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { TransactionDialogComponent } from '../transaction-dialog/transaction-dialog.component';
+import { MockApiService } from '../service/mock-api.service';
 
 
 @Component({
@@ -21,12 +22,18 @@ import { TransactionDialogComponent } from '../transaction-dialog/transaction-di
   styleUrl: './transaction-history.component.css'
 })
 export class TransactionHistoryComponent {
-
+  private mockapi: MockApiService = inject (MockApiService)
  // transactionValue = allBudgetValue[0].category[0].transaction;  // This contains the data from the DB (mock data)
-  categoryValue = allBudgetValue[0].category;  // This contains the data from the DB (mock data)
+  categoryValue = allBudgetValue.category;  // This contains the data from the DB (mock data)
   selectedCategory: any;// stores the data
   allbudget?: AllBudget;  // This is another variable you may want to initialize
   id!: number;
+
+  constructor() {
+    this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
+      this.categoryValue = value.category
+    });
+  }
 
     // Retrieve transactions based on the selected category
   get transactionValue()  {
@@ -46,17 +53,8 @@ export class TransactionHistoryComponent {
  // displays most recent tranaction first
     }
 
-    deleteTransaction(id: number, categoryTitle: string, spent: number) {
-        const category = this.categoryValue.find(cat => cat.title === categoryTitle) // find category based on title
-        if (category) {
-          // Update the 'remaining' and 'spent' values
-          category.remaining += spent; // Add the spent amount back to remaining
-          category.spent -= spent;     // Subtract the spent amount from the total spent
-          allBudgetValue[0].totalSpent = allBudgetValue[0].totalSpent + spent
-          allBudgetValue[0].totalBalance = allBudgetValue[0].totalBalance + spent
-          // Filter the transactions to remove the one with the specified id
-          category.transaction = category.transaction.filter(transaction => transaction.id !== id);
-        }
+    deleteTransaction(transiId: number, catTitle: string, spent: number) {
+      this.mockapi.deleteTransaction( transiId, catTitle, spent )
 
 
 
