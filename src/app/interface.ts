@@ -5,6 +5,7 @@ export interface AllBudget {
     totalSpent: number;
     payPeriod: string;
     payReset: string;
+    fixedExpense: fixedExpenseList[]
     category: CategoryList[] 
 }
 
@@ -25,5 +26,11 @@ export interface TransactionList {
     spent: number;
     transactionCategory: string;
   
+}
+
+export interface fixedExpenseList {
+    id: number;
+    title: string;
+    spent: number;
 }
 

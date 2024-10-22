@@ -1,28 +1,88 @@
 <mat-card class="example-card" appearance="outlined" style="height: 100%;box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
-    <mat-card-header style="display: flex; justify-content: space-between; align-items: center;" >
-      <mat-card-title>Category</mat-card-title>
-      <mat-icon style="cursor: pointer;" (click)="openDialog()">add</mat-icon>
-    </mat-card-header>
-    <mat-card-content style="height: 30rem;">
-      <p-table [value]="categoryValue" [tableStyle]="{ 'min-width': '25rem'}" [scrollable]="true" scrollHeight="200px">
-        <ng-template pTemplate="header">
+    <mat-card-header style="display: flex; justify-content: space-between; align-items: center;">
+        <mat-card-title>Fixed Expense</mat-card-title>
+        <mat-icon style="cursor: pointer;" (click)="openAddCatDialog()">add</mat-icon>
+      </mat-card-header>
+      <br>
+      <mat-card-content style="height: 15rem;">
+        <p-toast></p-toast>
+        <p-table [value]="fixedExpenseValue" dataKey="id" editMode="row" [resizableColumns]="true" styleClass="p-datatable-gridlines" 
+          [tableStyle]="{'min-width': '25rem'}">
+          <ng-template pTemplate="header">
             <tr>
-                <th>Title </th>
-                <th>Total </th>
-                <th>Spent </th>
-                <th>Remaining </th>
-                <th> </th>
+              <th pResizableColumn>Title</th> 
+              <th pResizableColumn>Cost</th>
+              <th style="max-width: 100px;"></th>
             </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-category>
-            <tr>
-                <td>{{category.title}}</td>
-                <td>${{category.total}}</td>
-                <td>$ -{{category.spent}}</td>
-                <td>${{category.remaining}}</td>
-                <td><mat-icon style="cursor: pointer;" (click)="openEditCatDialog(category)">edit</mat-icon></td>
+          </ng-template>
+          <ng-template pTemplate="body" let-fixedExpense let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="fixedExpense">
+              <td  >
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" [(ngModel)]="fixedExpense.title" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{fixedExpense.title}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td >
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" [(ngModel)]="fixedExpense.spent" />
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{fixedExpense.spent | currency: 'USD'}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="max-width: 100px;">
+                <div class="flex align-items-center justify-content-center gap-2">
+                  <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                    (click)="onRowEditInit(fixedExpense)" class="p-button-rounded p-button-text">
+                  </button>
+                  <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                    (click)="onRowEditSave(fixedExpense)" class="p-button-rounded p-button-text p-button-success mr-2">
+                  </button>
+                  <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                    (click)="onRowEditCancel(fixedExpense, ri)" class="p-button-rounded p-button-text p-button-danger">
+                  </button>
+                </div>
+              </td>
             </tr>
-        </ng-template>
+          </ng-template>
+        </p-table>
+      </mat-card-content>
+
+    
+  <mat-card-header style="display: flex; justify-content: space-between; align-items: center;">
+    <mat-card-title>Category</mat-card-title>
+    <mat-icon style="cursor: pointer;" (click)="openAddCatDialog()">add</mat-icon>
+  </mat-card-header>
+  <mat-card-content style="height: 28rem;">
+    <p-table [value]="categoryValue" [tableStyle]="{ 'min-width': '25rem'}" [scrollable]="true" scrollHeight="200px">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Title </th>
+          <th>Total </th>
+          <th>Spent </th>
+          <th>Remaining </th>
+          <th> </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-category>
+        <tr>
+          <td>{{category.title}}</td>
+          <td>${{category.total}}</td>
+          <td>$ -{{category.spent}}</td>
+          <td>${{category.remaining}}</td>
+          <td><mat-icon style="cursor: pointer;" (click)="openEditCatDialog(category)">edit</mat-icon></td>
+        </tr>
+      </ng-template>
     </p-table>
-    </mat-card-content> 
-  </mat-card>
+  </mat-card-content>
+
+
+
+</mat-card>

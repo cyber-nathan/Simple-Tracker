@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { allBudgetValue } from '../db.data';
 import { BehaviorSubject, find, Observable, of } from 'rxjs'
-import { AllBudget, CategoryList, TransactionList } from '../interface';
+import { AllBudget, CategoryList, fixedExpenseList, TransactionList } from '../interface';
 import { Subject, from } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -79,5 +79,16 @@ export class MockApiService {
 
     }
     this.subject.next(allBudget)
+  }
+
+  updatingFixedExpense(fixedExpenseObj: fixedExpenseList) {
+    let allBudget = this.subject.getValue();
+    let fixedExpenseItem = allBudget.fixedExpense.find(fixedExpense => fixedExpense.id === fixedExpenseObj.id)
+    if(fixedExpenseItem) {
+      fixedExpenseItem.title = fixedExpenseObj.title
+      fixedExpenseItem.spent = fixedExpenseObj.spent
+    }
+    this.subject.next(allBudget)
+    
   }
 }

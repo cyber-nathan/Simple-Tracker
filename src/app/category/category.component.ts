@@ -4,18 +4,27 @@ import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
 import { TableModule } from 'primeng/table';
-import { AllBudget, CategoryList } from '../interface';
+import { AllBudget, CategoryList, fixedExpenseList } from '../interface';
 import { allBudgetValue } from '../db.data';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { AddCategoryDialogComponent } from '../add-category-dialog/add-category-dialog.component';
 import { EditCategoryComponent } from '../edit-category/edit-category.component';
 import { NgIf } from '@angular/common';
 import { MockApiService } from '../service/mock-api.service';
+import { ToastModule } from 'primeng/toast';
+import { TagModule } from 'primeng/tag';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [MatCardModule, MatListModule, MatDividerModule, MatIconModule, TableModule,MatDialogModule, NgIf],
+  imports: [MatCardModule, MatListModule, MatDividerModule, MatIconModule, TableModule,MatDialogModule, NgIf, ToastModule, TagModule, DropdownModule, ButtonModule, InputTextModule, CommonModule, FormsModule],
+  providers: [MessageService],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })
@@ -23,7 +32,8 @@ export class CategoryComponent {
 
   categoryValue!: CategoryList[]
   allbudget?: AllBudget;  // This is another variable you may want to initialize
-
+  fixedExpenseValue!: fixedExpenseList[]
+  clonedFixedExpense: { [s: string]: fixedExpenseList } = {};
 
   readonly dialog = inject(MatDialog);
 
@@ -31,10 +41,33 @@ export class CategoryComponent {
   constructor() {
     this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
       this.categoryValue = value.category
+      this.fixedExpenseValue =value.fixedExpense
     });
   }
 
-  openDialog() {
+  onRowEditInit(fixedExpense: fixedExpenseList) {
+    this.clonedFixedExpense[fixedExpense.id as number] = { ...fixedExpense };
+    console.log(this.clonedFixedExpense)
+}
+
+onRowEditSave(fixedExpense: fixedExpenseList) {
+    if (fixedExpense.spent > 0) {
+        delete this.clonedFixedExpense[fixedExpense.id as number];
+        console.log(fixedExpense)
+        this.mockapi.updatingFixedExpense(fixedExpense)
+        //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
+    } else {
+      //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });
+    }
+}
+
+onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
+    this.fixedExpenseValue[index] = this.clonedFixedExpense[fixedExpense.id as number];
+    delete this.clonedFixedExpense[fixedExpense.id as number];
+    console.log(this.clonedFixedExpense)
+}
+
+  openAddCatDialog() {
     const dialogRef = this.dialog.open(AddCategoryDialogComponent);
 
     dialogRef.afterClosed().subscribe(result => {
