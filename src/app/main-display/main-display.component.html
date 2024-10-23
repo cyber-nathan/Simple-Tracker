@@ -6,7 +6,7 @@
                 <mat-card-header style="padding-bottom: 1rem;">
                     <mat-card-title>Total Balance</mat-card-title>
                   </mat-card-header>
-                <mat-card-content style="font-size: 25px; "> ${{overallMoney.totalBalance}} </mat-card-content>
+                <mat-card-content style="font-size: 25px; "> {{overallMoney.totalBalance | currency: 'USD'}} </mat-card-content>
             </mat-card>
         </div>
     </div>
@@ -16,7 +16,7 @@
                 <mat-card-header style="padding-bottom: 1rem;">
                     <mat-card-title>Salary ({{overallMoney.payPeriod}})</mat-card-title>
                   </mat-card-header>
-                <mat-card-content style="font-size: 25px;"> ${{overallMoney.salery}}</mat-card-content>
+                <mat-card-content style="font-size: 25px;"> {{overallMoney.salery | currency: 'USD'}}</mat-card-content>
             </mat-card>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 <mat-card-header style="padding-bottom: 1rem;">
                     <mat-card-title>Total Spent</mat-card-title>
                   </mat-card-header>
-                <mat-card-content style="font-size: 25px;"> ${{overallMoney.totalSpent}}</mat-card-content>
+                <mat-card-content style="font-size: 25px;"> {{overallMoney.totalSpent | currency: 'USD'}}</mat-card-content>
             </mat-card>
         </div>
     </div>

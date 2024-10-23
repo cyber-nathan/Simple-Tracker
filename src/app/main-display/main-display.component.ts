@@ -6,6 +6,7 @@ import {MatCardModule} from '@angular/material/card';
 import { AllBudget, CategoryList } from '../interface';
 import { allBudgetValue } from '../db.data';
 import { MockApiService } from '../service/mock-api.service';
+import { CommonModule } from '@angular/common';
 export interface Tile {
   cols: number;
   rows: number;
@@ -15,7 +16,7 @@ export interface Tile {
 @Component({
   selector: 'app-main-display',
   standalone: true,
-  imports: [MatGridListModule, CategoryComponent, TransactionHistoryComponent, MatCardModule],
+  imports: [MatGridListModule, CategoryComponent, TransactionHistoryComponent, MatCardModule, CommonModule],
   templateUrl: './main-display.component.html',
   styleUrl: './main-display.component.css'
 })

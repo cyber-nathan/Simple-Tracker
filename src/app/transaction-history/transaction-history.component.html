@@ -31,8 +31,11 @@
                     <td>{{transactions.date}}</td>
                     <td>{{transactions.description}}</td>
                     <td>{{transactions.transactionCategory}}</td>
-                    <td>{{transactions.spent}}</td>
-                    <td><mat-icon style="cursor: pointer;" (click)="deleteTransaction( transactions.id, transactions.transactionCategory, transactions.spent)">delete</mat-icon></td>
+                    <td>{{transactions.spent | currency: 'USD'}}</td>
+
+                    <td><button  pButton pRipple type="button"  icon="pi pi-trash"
+                        (click)="deleteTransaction( transactions.id, transactions.transactionCategory, transactions.spent)" class="p-button-rounded p-button-text">
+                    </button></td>
                 </tr>
             </ng-template>
     </p-table>

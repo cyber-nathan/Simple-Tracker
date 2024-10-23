@@ -12,12 +12,13 @@ import { allBudgetValue } from '../db.data';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { TransactionDialogComponent } from '../transaction-dialog/transaction-dialog.component';
 import { MockApiService } from '../service/mock-api.service';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
   selector: 'app-transaction-history',
   standalone: true,
-  imports: [TableModule, FormsModule, CommonModule,MatCardModule, MatListModule, MatIconModule, ListboxModule, DropdownModule, MatDialogModule],
+  imports: [TableModule, FormsModule, CommonModule,MatCardModule, MatListModule, MatIconModule, ListboxModule, DropdownModule, MatDialogModule, ButtonModule],
   templateUrl: './transaction-history.component.html',
   styleUrl: './transaction-history.component.css'
 })

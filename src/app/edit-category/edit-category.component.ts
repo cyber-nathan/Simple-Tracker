@@ -44,9 +44,9 @@ export class EditCategoryComponent {
 
   }
 
-  deleteCat() {
-    this.mockapi.deleteCat(this.data.id)
+  // deleteCat() {
+  //   this.mockapi.deleteCat(this.data.id)
 
-  }
+  // }
 
 }

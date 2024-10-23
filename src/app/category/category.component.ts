@@ -6,7 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { TableModule } from 'primeng/table';
 import { AllBudget, CategoryList, fixedExpenseList } from '../interface';
 import { allBudgetValue } from '../db.data';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { AddCategoryDialogComponent } from '../add-category-dialog/add-category-dialog.component';
 import { EditCategoryComponent } from '../edit-category/edit-category.component';
 import { NgIf } from '@angular/common';
@@ -19,21 +19,23 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { AddFixedExpenseComponent } from '../add-fixed-expense/add-fixed-expense.component';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [MatCardModule, MatListModule, MatDividerModule, MatIconModule, TableModule,MatDialogModule, NgIf, ToastModule, TagModule, DropdownModule, ButtonModule, InputTextModule, CommonModule, FormsModule],
+  imports: [MatCardModule, MatListModule, MatDividerModule, MatIconModule, TableModule,MatDialogModule, NgIf, ToastModule, TagModule, DropdownModule, ButtonModule, InputTextModule, CommonModule, FormsModule, InputNumberModule],
   providers: [MessageService],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })
 export class CategoryComponent {
-
   categoryValue!: CategoryList[]
   allbudget?: AllBudget;  // This is another variable you may want to initialize
   fixedExpenseValue!: fixedExpenseList[]
   clonedFixedExpense: { [s: string]: fixedExpenseList } = {};
+  afterExpense?: number;
 
   readonly dialog = inject(MatDialog);
 
@@ -42,6 +44,7 @@ export class CategoryComponent {
     this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
       this.categoryValue = value.category
       this.fixedExpenseValue =value.fixedExpense
+      this.allbudget = value
     });
   }
 
@@ -67,6 +70,8 @@ onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
     console.log(this.clonedFixedExpense)
 }
 
+
+
   openAddCatDialog() {
     const dialogRef = this.dialog.open(AddCategoryDialogComponent);
 
@@ -78,11 +83,30 @@ onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
     const dialogRef = this.dialog.open(EditCategoryComponent,  {
       data: category
     });
+    
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
       
     });
+  }
+
+  openAddFixedExpenseDialog() {
+    const dialogRef = this.dialog.open(AddFixedExpenseComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  deleteCat(catId: number) {
+    this.mockapi.deleteCat(catId)
+
+  }
+  
+  deleteFixedExpense(fixedId: number) {
+    this.mockapi.deleteFixedExpense(fixedId)
+
   }
   
 

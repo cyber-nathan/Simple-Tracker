@@ -57,7 +57,7 @@ export class MockApiService {
           catItem.remaining += spent; // Add the spent amount back to remaining
           catItem.spent -= spent;     // Subtract the spent amount from the total spent
           allBudgetValue.totalSpent = allBudgetValue.totalSpent + spent
-          allBudgetValue.totalBalance = allBudgetValue.totalBalance + spent
+          // allBudgetValue.totalBalance = allBudgetValue.totalBalance + spent
           // Filter the transactions to remove the one with the specified id
           catItem.transaction = catItem.transaction.filter(transaction => transaction.id !== transId);
         }
@@ -74,11 +74,19 @@ export class MockApiService {
       catItem.remaining = catItem.remaining - spent
       catItem.spent = +catItem.spent + +spent
       console.log(catItem.spent+1)
-      allBudget.totalSpent = allBudget.totalSpent - spent
-      allBudget.totalBalance = allBudget.totalBalance - spent
+      allBudget.totalSpent = allBudget.totalSpent + spent
+      // allBudget.totalBalance = allBudget.totalBalance - spent
 
     }
     this.subject.next(allBudget)
+  }
+
+  addFixedExpense(title: string, cost: number){
+    let allBudget = this.subject.getValue();
+    allBudget.fixedExpense.push({id: this.counter++, title: title, spent: cost } );
+
+    this.subject.next(allBudget)
+
   }
 
   updatingFixedExpense(fixedExpenseObj: fixedExpenseList) {
@@ -90,5 +98,13 @@ export class MockApiService {
     }
     this.subject.next(allBudget)
     
+  }
+
+  deleteFixedExpense(fixedId: number) {
+    let allBudget = this.subject.getValue();
+
+    allBudget.fixedExpense = allBudget.fixedExpense.filter(fixedExpense => fixedExpense.id !== fixedId)
+
+    this.subject.next(allBudget)
   }
 }

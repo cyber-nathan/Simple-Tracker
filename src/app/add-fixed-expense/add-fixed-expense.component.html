@@ -9,8 +9,8 @@
 
         <p-floatLabel>
           
-          <p-inputNumber inputId="totalAmount" [(ngModel)]="totalAmount"  [min]="0"  mode="decimal" [minFractionDigits]="1"  [maxFractionDigits]="2"/>
-          <label for="totalAmount"> Total Amount</label>
+          <p-inputNumber inputId="totalAmount" [(ngModel)]="cost"  [min]="0"  mode="decimal" [minFractionDigits]="1"  [maxFractionDigits]="2"/>
+          <label for="totalAmount"> Total Cost</label>
       </p-floatLabel>
       
         <!-- <input type="submit" value="Submit"> -->
@@ -19,6 +19,7 @@
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="addCategory()">Add</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="addFixedExpense()">Add</button>
 </mat-dialog-actions>
+
 

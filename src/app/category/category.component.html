@@ -1,17 +1,17 @@
 <mat-card class="example-card" appearance="outlined" style="height: 100%;box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
     <mat-card-header style="display: flex; justify-content: space-between; align-items: center;">
         <mat-card-title>Fixed Expense</mat-card-title>
-        <mat-icon style="cursor: pointer;" (click)="openAddCatDialog()">add</mat-icon>
+        <mat-icon style="cursor: pointer;" (click)="openAddFixedExpenseDialog()">add</mat-icon>
       </mat-card-header>
       <br>
       <mat-card-content style="height: 15rem;">
         <p-toast></p-toast>
-        <p-table [value]="fixedExpenseValue" dataKey="id" editMode="row" [resizableColumns]="true" styleClass="p-datatable-gridlines" 
+        <p-table [value]="fixedExpenseValue" dataKey="id" editMode="row" scrollHeight="250px"
           [tableStyle]="{'min-width': '25rem'}">
           <ng-template pTemplate="header">
             <tr>
-              <th pResizableColumn>Title</th> 
-              <th pResizableColumn>Cost</th>
+              <th >Title</th> 
+              <th >Cost</th>
               <th style="max-width: 100px;"></th>
             </tr>
           </ng-template>
@@ -30,7 +30,7 @@
               <td >
                 <p-cellEditor>
                   <ng-template pTemplate="input">
-                    <input pInputText type="text" [(ngModel)]="fixedExpense.spent" />
+                    <p-inputNumber inputId="spent" [(ngModel)]="fixedExpense.spent" [min]="0"  mode="decimal" [minFractionDigits]="1"  [maxFractionDigits]="2"/>
                   </ng-template>
                   <ng-template pTemplate="output">
                     {{fixedExpense.spent | currency: 'USD'}}
@@ -48,20 +48,24 @@
                   <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
                     (click)="onRowEditCancel(fixedExpense, ri)" class="p-button-rounded p-button-text p-button-danger">
                   </button>
+                  <button   *ngIf="editing" pButton pRipple type="button" pDeleteEditableRow  icon="pi pi-trash"
+                (click)="deleteFixedExpense(fixedExpense.id)" class="p-button-rounded p-button-text">
+              </button>
                 </div>
               </td>
             </tr>
           </ng-template>
         </p-table>
+        <p ><b>After Expense:</b> </p>
       </mat-card-content>
-
+<br>
     
   <mat-card-header style="display: flex; justify-content: space-between; align-items: center;">
     <mat-card-title>Category</mat-card-title>
     <mat-icon style="cursor: pointer;" (click)="openAddCatDialog()">add</mat-icon>
   </mat-card-header>
-  <mat-card-content style="height: 28rem;">
-    <p-table [value]="categoryValue" [tableStyle]="{ 'min-width': '25rem'}" [scrollable]="true" scrollHeight="200px">
+  <mat-card-content style="height: 27rem;"> 
+    <p-table [value]="categoryValue" [tableStyle]="{ 'min-width': '25rem'}" [scrollable]="true" scrollHeight="300px">
       <ng-template pTemplate="header">
         <tr>
           <th>Title </th>
@@ -69,15 +73,23 @@
           <th>Spent </th>
           <th>Remaining </th>
           <th> </th>
+          <th> </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-category>
         <tr>
-          <td>{{category.title}}</td>
-          <td>${{category.total}}</td>
-          <td>$ -{{category.spent}}</td>
-          <td>${{category.remaining}}</td>
-          <td><mat-icon style="cursor: pointer;" (click)="openEditCatDialog(category)">edit</mat-icon></td>
+          <td>{{category.title }}</td>
+          <td>{{category.total | currency: 'USD'}}</td>
+          <td> -{{category.spent | currency: 'USD'}}</td>
+          <td>{{category.remaining | currency: 'USD'}}</td>
+          <td><button  pButton pRipple type="button"icon="pi pi-pencil"
+          (click)="openEditCatDialog(category)" class="p-button-rounded p-button-text">
+        </button>
+          </td>
+          <td><button  pButton pRipple type="button"icon="pi pi-trash"
+            (click)="deleteCat(category.id)" class="p-button-rounded p-button-text">
+          </button>
+            </td>
         </tr>
       </ng-template>
     </p-table>
