@@ -41,7 +41,7 @@ export class MainDisplayComponent {
   }
 
   // ngOnInit(): void {
-  //   this.trackerReset(5000); // Reset after 5 seconds
+  //   this.mockapi.startAutoReset('2024-10-24'); // Reset after 5 seconds
   // }
 
   // trackerReset(resetAfterMs: number) {

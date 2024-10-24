@@ -55,9 +55,11 @@ export class CategoryComponent {
 
 onRowEditSave(fixedExpense: fixedExpenseList) {
     if (fixedExpense.spent > 0) {
+      console.log("clone", this.clonedFixedExpense[fixedExpense.id as number].spent)
+      this.mockapi.updatingFixedExpense(fixedExpense.spent, this.clonedFixedExpense[fixedExpense.id as number].spent)
         delete this.clonedFixedExpense[fixedExpense.id as number];
         console.log(fixedExpense)
-        this.mockapi.updatingFixedExpense(fixedExpense)
+        
         //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
     } else {
       //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });

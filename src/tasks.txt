@@ -1,14 +1,13 @@
 
 make category table editable like fixed expense table (optional)
 
-display after expesne budget
+display after expesne budget /
 
 create savings
 
 make leftover money rollover to next period budget
 
 reset budget for next time period
-
 
 make sure everything logically makes sense 
 

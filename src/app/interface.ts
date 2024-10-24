@@ -1,6 +1,7 @@
 export interface AllBudget {
     id: number;
     totalBalance: number;
+    afterExpense: number;
     salery: number;
     totalSpent: number;
     payPeriod: string;

@@ -4,7 +4,8 @@ import { AllBudget } from "./interface"
 export let allBudgetValue: AllBudget = 
     {
         id: 0,
-        totalBalance: 15700,
+        totalBalance: 5000,
+        afterExpense: 3500,
         salery: 2100,
         totalSpent: 106.32,
         payPeriod: "Biweekly",
