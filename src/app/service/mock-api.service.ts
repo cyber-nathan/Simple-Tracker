@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { allBudgetValue } from '../db.data';
 import { BehaviorSubject, find, Observable, of } from 'rxjs'
 import { AllBudget, CategoryList, fixedExpenseList, TransactionList } from '../interface';
@@ -7,9 +7,7 @@ import { Subject, from } from 'rxjs';
   providedIn: 'root'
 })
 export class MockApiService {
-    private readonly BUDGET_KEY = 'user_budget';
-  private readonly RESET_DATE_KEY = 'budget_reset_date';
-  private readonly FREQUENCY_KEY = 'budget_frequency';
+  budgetSig = signal<AllBudget | null>(null)
   counter = 2;
   subject = new BehaviorSubject<AllBudget>(allBudgetValue)
   currentData = this.subject.asObservable();
@@ -19,6 +17,19 @@ export class MockApiService {
   getBudgetData(): Observable<AllBudget> {
 
     return this.currentData
+  }
+
+  saveSettings(balance: number, salery: number, payPeriod: string, payReset: string ) {
+    let allBudget = this.subject.getValue();
+    console.log(payPeriod , balance)
+    allBudget.afterExpense = allBudget.afterExpense + (balance - allBudget.totalBalance  )
+    allBudget.totalBalance = balance
+    allBudget.salery = salery
+    allBudget.payPeriod = payPeriod
+    console.log(allBudget.payPeriod)
+    allBudget.payReset = payReset
+
+    this.subject.next(allBudget)
   }
 
   deleteCat(id: number) {
@@ -85,7 +96,7 @@ export class MockApiService {
 
   addFixedExpense(title: string, cost: number){
     let allBudget = this.subject.getValue();
-    allBudget.fixedExpense.push({id: this.counter++, title: title, spent: cost } );
+    allBudget.fixedExpense.push({id: this.counter++, title: title, spent: cost, } );
     allBudget.afterExpense = allBudget.afterExpense - cost
 
     this.subject.next(allBudget)
@@ -111,32 +122,4 @@ export class MockApiService {
     this.subject.next(allBudget)
   }
 
-  // resetBudget() {
-  //   let allBudget = this.subject.getValue();
-  //   allBudget.totalSpent = 0;
-  //   console.log('same date change')
-  //   for (let i =0; i < allBudget.category.length; i++ ) {
-  //       allBudget.category[i].spent = 0;
-  //       allBudget.category[i].remaining = allBudget.category[i].total; // adjust for rollover
-  //   }
-  //   this.subject.next(allBudget)
-  // }
-
-  //  // Check if budget should reset and reset if necessary
-  //   checkAndResetBudget( currentDate: string): void {
-  //     const today = new Date();
-  
-  //     if (today.getMonth() >= new Date(currentDate).getMonth()) {
-        
-  //       this.resetBudget();
-  //      // this.updateNextResetDate();
-  //     }
-  //   }
-
-  //  // Automatically trigger budget reset every 5 seconds for testing purposes
-  //   startAutoReset(currentDate: string): void {
-  //     setInterval(() => {
-  //       this.checkAndResetBudget(currentDate);
-  //     }, 1000); // Check every 1 second if reset is needed
-  //   }
 }

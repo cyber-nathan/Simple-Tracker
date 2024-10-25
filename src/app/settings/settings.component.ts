@@ -1,37 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { allBudgetValue } from '../db.data';
 import { CategoryList, AllBudget } from '../interface';
 import { FormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { DropdownModule } from 'primeng/dropdown';
+import { MockApiService } from '../service/mock-api.service';
+
+
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [MatDialogModule, FormsModule, MatButtonModule],
+  imports: [MatDialogModule, FormsModule, MatButtonModule, InputNumberModule, FloatLabelModule, DropdownModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })
 export class SettingsComponent {
+  payPeriods: string[] = ['Daily','Weekly', 'Bi-weekly', 'Monthly']
+  payResets: string[] = ['Daily','Weekly', 'Bi-weekly', 'Monthly']
   userSettings: AllBudget  = allBudgetValue;  // This contains the data from the DB (mock data)
   categoryValue: CategoryList[]  = allBudgetValue.category;
   selectedCategory: any; // holds selected category
   allbudget?: AllBudget;  // This is another variable you may want to initialize
 
-  totalBalance!: string 
-  salery!: string
-  payPeriod!: string
-  resetPeriod!: string
+  private mockapi: MockApiService = inject (MockApiService)
+  
+  constructor() {
+    this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
+      this.userSettings = value
+    });
+   // console.log(this.data)
+  }
+
+  totalBalance: number = this.userSettings.totalBalance
+  salery: number = this.userSettings.salery
+  payPeriod: string = this.userSettings.payPeriod
+  payReset: string =  this.userSettings.payReset
+
+
+
+
+
+  ngOnInit() {
+}
 
   saveSettings() {
-    if (this.userSettings.totalBalance != 0 && this.userSettings.totalSpent != 0 ) { // change setting when already configured 
-      this.userSettings.totalBalance = parseFloat(this.totalBalance)
-      this.userSettings.salery = parseFloat(this.salery)
-    }
-    else {
-
-     // this.userSettings.push({id: this.userSettings.length-1, totalBalance: parseFloat(this.totalBalance), salery: parseFloat(this.salery), totalSpent: 0, payPeriod: this.payPeriod, payReset: this.resetPeriod, category: [] })
-      console.log(this.userSettings)
-    }
+    this.mockapi.saveSettings(this.totalBalance, this.salery, this.payPeriod, this.payReset)
   }
 
   // ngOnInit(): void {

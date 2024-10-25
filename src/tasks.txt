@@ -3,6 +3,8 @@ make category table editable like fixed expense table (optional)
 
 display after expesne budget /
 
+create setting functions /
+
 create savings
 
 make leftover money rollover to next period budget

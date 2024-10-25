@@ -1,40 +1,41 @@
 <h2 mat-dialog-title>Settings</h2>
-<mat-dialog-content class="mat-typography">
-    <div>
-        <form action="">
+<mat-dialog-content class="mat-typography" style="width: 500px; height: 600px;">
+  <div style="
+      display: flex;
+      gap: 50px;
+      padding: 30px 0px;
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    ">
+    <p-floatLabel>
+      <p-inputNumber inputId="totalBalance" [(ngModel)]="totalBalance" [min]="0" mode="decimal" [minFractionDigits]="1"
+        [maxFractionDigits]="2" [style]="{ width: '25rem' }"/>
+      <label for="spent">Enter Total Balance </label>
+    </p-floatLabel>
 
-          <label for="Balance">Enter Balance</label>
-          <input type="text" id="Balance" name="Balance" [(ngModel)]="totalBalance" placeholder="Balance">
-      
-          <label for="salery">Enter Salery</label>
-          <input type="text" id="salery" name="salery" [(ngModel)]="salery"placeholder="Salery">
-      
-          <label for="payPeriod">Pay Period</label>
-          <select id="payPeriod" name="payPeriod" [(ngModel)]="payPeriod">
-            <option value="Daily">Daily (240 pay periods a year)</option>
-            <option value="Weekly">Weekly (52 pay periods a year)</option>
-            <option value="Biweekly">Biweekly (26 pay periods a year)</option>
-            <option value="Semi-monthly">Semi-monthly (24 pay periods a year)</option>
-            <option value="Monthly">Monthly (12 pay periods a year)</option>
-            <option value="ten">10 pay periods a year</option>
-            <option value="thirteen">13 pay periods a year</option>
-            <option value="twentytwo">22 pay periods a year</option>
-            <option value="Weekly2">Weekly (53 pay periods a year)</option>
-            <option value="Biweekly2">Biweekly (27 pay periods a year)</option>
-          </select>
+    <p-floatLabel>
+      <p-inputNumber inputId="salery" [(ngModel)]="salery" [min]="0" mode="decimal" [minFractionDigits]="1"
+        [maxFractionDigits]="2" [style]="{ width: '25rem' }"/>
+      <label for="spent">Enter Salery </label>
+    </p-floatLabel>
 
-          <label for="reset">Reset Period</label>
-          <select id="reset" name="reset" [(ngModel)]="resetPeriod">
-            <option value="Daily">Daily (Start of everyday)</option>
-            <option value="Weekly">Weekly (Start of every Week)</option>
-            <option value="Monthly">Monthly (Start of evert month)</option>
-            <option value="Yearly">Yearly (Start of every year)</option>
-          </select>
+    <p-floatLabel>
+      <p-dropdown [options]="payPeriods" [(ngModel)]="payPeriod" [checkmark]="true" 
+        [showClear]="true" placeholder="Select Pay-period" [style]="{ width: '25rem' }" >
+      </p-dropdown>
+      <label for="payPeriod">Select Pay-period</label>
+    </p-floatLabel>
 
-        
-          <!-- <input type="submit" value="Submit"> -->
-        </form>
-      </div>
+    <p-floatLabel>
+      <p-dropdown [options]="payResets" [(ngModel)]="payReset" [checkmark]="true" 
+        [showClear]="true" placeholder="Select Reset-period" [style]="{ width: '25rem' }" >
+      </p-dropdown>
+      <label for="payReset">Select reset-period</label>
+    </p-floatLabel>
+
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

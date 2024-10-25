@@ -8,12 +8,12 @@ export let allBudgetValue: AllBudget =
         afterExpense: 3500,
         salery: 2100,
         totalSpent: 106.32,
-        payPeriod: "Biweekly",
+        payPeriod: "Bi-weekly",
         payReset: "Monthly",
         fixedExpense: [{
             id:0,
             title: "Rent",
-            spent: 1500
+            spent: 1500,
         }],
         category: [{
             id: 0,

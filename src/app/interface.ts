@@ -7,7 +7,7 @@ export interface AllBudget {
     payPeriod: string;
     payReset: string;
     fixedExpense: fixedExpenseList[]
-    category: CategoryList[] 
+category: CategoryList[] 
 }
 
 export interface CategoryList {

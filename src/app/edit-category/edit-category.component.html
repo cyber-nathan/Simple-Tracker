@@ -1,15 +1,15 @@
 <h2 mat-dialog-title>Edit Category</h2>
 <mat-dialog-content class="mat-typography" style="width: 100%;">
-    <div style="display: flex; gap: 30px; padding: 20px 0px; flex-direction: column; width: 50%;">
+    <div style="display: flex; gap: 30px; padding: 20px 0px; flex-direction: column; width: 100%; justify-content: center; align-items: center;">
 
       <p-floatLabel>
-        <input pInputText id="title" [(ngModel)]="editTitle" />
+        <input pInputText id="title" [(ngModel)]="editTitle"  [style]="{ width: '25rem' }"/>
         <label for="title">Title</label>
     </p-floatLabel>
 
           <p-floatLabel>
             
-            <p-inputNumber inputId="totalAmount" [(ngModel)]="editTotal"  [min]="0"/>
+            <p-inputNumber inputId="totalAmount" [(ngModel)]="editTotal"  [min]="0" [style]="{ width: '25rem' }"/>
             <label for="totalAmount"> Total Amount</label>
         </p-floatLabel>
         
