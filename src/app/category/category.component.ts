@@ -21,6 +21,8 @@ import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { AddFixedExpenseComponent } from '../add-fixed-expense/add-fixed-expense.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { BudgetService } from '../service/budget.service';
+import { BudgetFirebaseSerice } from '../service/budgetFirebase.service';
 
 @Component({
   selector: 'app-category',
@@ -31,6 +33,12 @@ import { InputNumberModule } from 'primeng/inputnumber';
   styleUrl: './category.component.css'
 })
 export class CategoryComponent {
+
+  budgetFirebaseService = inject(BudgetFirebaseSerice)
+   documentId = 'Z73bsjXo66aVCEoBTCSJ'
+   budgetService: BudgetService = inject(BudgetService)
+
+
   categoryValue!: CategoryList[]
   allbudget?: AllBudget;  // This is another variable you may want to initialize
   fixedExpenseValue!: fixedExpenseList[]
@@ -41,23 +49,27 @@ export class CategoryComponent {
 
   private mockapi: MockApiService = inject (MockApiService)
   constructor() {
-    this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
-      this.categoryValue = value.category
-      this.fixedExpenseValue =value.fixedExpense
-      this.allbudget = value
-    });
+    // this.budgetService.getBudgetById(this.documentId).subscribe(budget => {
+    //   this.budgetService.budgetSig.set(budget); // Set the fetched data
+    //   console.log("this is budget",this.budgetService.budgetSig())
+    // });
+    // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
+    //   this.categoryValue = value.category
+    //   this.fixedExpenseValue =value.fixedExpense
+    //   this.allbudget = value
+    // });
   }
 
   onRowEditInit(fixedExpense: fixedExpenseList) {
-    this.clonedFixedExpense[fixedExpense.id as number] = { ...fixedExpense };
+    this.clonedFixedExpense[fixedExpense.id ] = { ...fixedExpense };
     console.log(this.clonedFixedExpense)
 }
 
 onRowEditSave(fixedExpense: fixedExpenseList) {
     if (fixedExpense.spent > 0) {
-      console.log("clone", this.clonedFixedExpense[fixedExpense.id as number].spent)
-      this.mockapi.updatingFixedExpense(fixedExpense.spent, this.clonedFixedExpense[fixedExpense.id as number].spent)
-        delete this.clonedFixedExpense[fixedExpense.id as number];
+      console.log("clone", this.clonedFixedExpense[fixedExpense.id ].spent)
+      this.mockapi.updatingFixedExpense(fixedExpense.spent, this.clonedFixedExpense[fixedExpense.id ].spent)
+        delete this.clonedFixedExpense[fixedExpense.id ];
         console.log(fixedExpense)
         
         //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
@@ -67,8 +79,8 @@ onRowEditSave(fixedExpense: fixedExpenseList) {
 }
 
 onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
-    this.fixedExpenseValue[index] = this.clonedFixedExpense[fixedExpense.id as number];
-    delete this.clonedFixedExpense[fixedExpense.id as number];
+    this.fixedExpenseValue[index] = this.clonedFixedExpense[fixedExpense.id ];
+    delete this.clonedFixedExpense[fixedExpense.id ];
     console.log(this.clonedFixedExpense)
 }
 

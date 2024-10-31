@@ -35,27 +35,27 @@ export class MockApiService {
   deleteCat(id: number) {
     let allBudget = this.subject.getValue();
 
-    allBudget.category = allBudget.category.filter(category => category.id !== id)
+    //allBudget.category = allBudget.category.filter(category => category.id !== id)
 
     this.subject.next(allBudget)
   }
 
   addCat(catTitle: string, catTotal: number) { // change to number
     let allBudget = this.subject.getValue();
-    allBudget.category.push({id: this.counter++, title: catTitle, total: catTotal, spent: 0,  remaining:  catTotal, transaction: []} );
+   // allBudget.category.push({id: this.counter++, title: catTitle, total: catTotal, spent: 0,  remaining:  catTotal, transaction: []} );
 
     this.subject.next(allBudget)
   }
 
   editCat(id: number, title: string, total: number) {
     let allBudget = this.subject.getValue();
-    let catItem = allBudget.category.find(category => category.id === id)
-    if (catItem) {
-      catItem.title = title
-      catItem.remaining = catItem.remaining + ( +total - catItem.total)
-      catItem.total = +total
+    // let catItem = allBudget.category.find(category => category.id === id)
+    // if (catItem) {
+    //   catItem.title = title
+    //   catItem.remaining = catItem.remaining + ( +total - catItem.total)
+    //   catItem.total = +total
   
-    }
+    // }
 
     this.subject.next(allBudget)
 
@@ -72,7 +72,7 @@ export class MockApiService {
           allBudgetValue.totalSpent = allBudgetValue.totalSpent + spent
           // allBudgetValue.totalBalance = allBudgetValue.totalBalance + spent
           // Filter the transactions to remove the one with the specified id
-          catItem.transaction = catItem.transaction.filter(transaction => transaction.id !== transId);
+          //catItem.transaction = catItem.transaction.filter(transaction => transaction.id !== transId);
         }
     this.subject.next(allBudget)
   }
@@ -83,7 +83,7 @@ export class MockApiService {
     console.log("this is cat", catTitle)
     if(catItem) { 
       console.log("in service add transaction is a category")
-      catItem?.transaction.push({id: catItem?.transaction.length, date: date, description: description, spent: spent, transactionCategory: catTitle}) // push the new transaction to its respected cateogry array
+     // catItem?.transaction.push({id: catItem?.transaction.length, date: date, description: description, spent: spent, transactionCategory: catTitle}) // push the new transaction to its respected cateogry array
       catItem.remaining = catItem.remaining - spent
       catItem.spent = +catItem.spent + +spent
       console.log(catItem.spent+1)
@@ -96,7 +96,7 @@ export class MockApiService {
 
   addFixedExpense(title: string, cost: number){
     let allBudget = this.subject.getValue();
-    allBudget.fixedExpense.push({id: this.counter++, title: title, spent: cost, } );
+    //allBudget.fixedExpense.push({id: this.counter++, title: title, spent: cost, } );
     allBudget.afterExpense = allBudget.afterExpense - cost
 
     this.subject.next(allBudget)
@@ -113,11 +113,11 @@ export class MockApiService {
 
   deleteFixedExpense(fixedId: number) {
     let allBudget = this.subject.getValue();
-    let fixedExpenseItem = allBudget.fixedExpense.find(fixedExpense => fixedExpense.id === fixedId)
-    if(fixedExpenseItem) {
-      allBudget.afterExpense = allBudget.afterExpense + fixedExpenseItem?.spent
-    }
-    allBudget.fixedExpense = allBudget.fixedExpense.filter(fixedExpense => fixedExpense.id !== fixedId)
+    //let fixedExpenseItem = allBudget.fixedExpense.find(fixedExpense => fixedExpense.id === fixedId)
+    // if(fixedExpenseItem) {
+    //   allBudget.afterExpense = allBudget.afterExpense + fixedExpenseItem?.spent
+    // }
+    // allBudget.fixedExpense = allBudget.fixedExpense.filter(fixedExpense => fixedExpense.id !== fixedId)
 
     this.subject.next(allBudget)
   }

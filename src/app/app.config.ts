@@ -17,11 +17,15 @@ const firebaseConfig = {
   measurementId: "G-3G5PXBJRD0"
 };
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), 
+  providers: [
+    //provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes), 
     provideClientHydration(),
     provideAnimationsAsync(),
     provideFirebaseApp(() => initializeApp(firebaseConfig)), 
     provideFirestore(() => getFirestore())
+ 
+
+
 ]
 };

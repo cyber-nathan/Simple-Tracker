@@ -40,7 +40,7 @@ export class EditCategoryComponent {
 
 
   edit() { 
-    this.mockapi.editCat(this.data.id, this.editTitle, this.editTotal)
+   // this.mockapi.editCat(this.data.id, this.editTitle, this.editTotal)
 
   }
 

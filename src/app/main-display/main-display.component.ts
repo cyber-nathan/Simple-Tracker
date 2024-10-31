@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { CategoryComponent } from "../category/category.component";
 import { TransactionHistoryComponent } from "../transaction-history/transaction-history.component";
@@ -24,7 +24,7 @@ export interface Tile {
   templateUrl: './main-display.component.html',
   styleUrl: './main-display.component.css'
 })
-export class MainDisplayComponent implements OnInit {
+export class MainDisplayComponent {
 
   budgetFirebaseService = inject(BudgetFirebaseSerice)
   private mockapi: MockApiService = inject (MockApiService)
@@ -32,20 +32,34 @@ export class MainDisplayComponent implements OnInit {
   overallMoney!: AllBudget;  // This contains the data from the DB (mock data)
   //allbudget?: AllBudget;  // This is another variable you may want to initialize
   //categoryValue: CategoryList[]  = allBudgetValue.category;
+  budget: AllBudget | null = null
   constructor() {
-    this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
+    this.budget = this.budgetService.getBudget() 
+    console.log("main display ts", this.budget)
+
+   // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
       
-    });
+    //});
   }
 
-  ngOnInit(): void {
-    this.budgetFirebaseService.getBudget().subscribe(budget => {
-      this.budgetService.budgetSig.set(budget);
-      this.overallMoney = budget
-      console.log(budget)
-      console.log("this is budget",this.budgetService.budgetSig())
-    })
-  }
+  // ngOnInit(): void {
+  //   this.budgetFirebaseService.getBudget().subscribe((budget: AllBudget[]) => {
+  //     console.log(budget)
+  //     this.budgetService.budgetSig.set(budget[0]);
+  //     console.log("this is budget",this.budgetService.budgetSig()?.salery)
+  //   })
+  // }
+  
+
+   
+
+  // ngOnInit(): void {
+  //   const documentId = 'Z73bsjXo66aVCEoBTCSJ'; // Replace with your actual document ID
+  //   this.budgetFirebaseService.getBudget().subscribe(budget => {
+  //     this.budgetService.budgetSig.set(budget[0]); // Set the fetched data
+  //     console.log("this is budget",this.budgetService.budgetSig())
+  //   });
+  // }
 
 
 
