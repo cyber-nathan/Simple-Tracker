@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, Input, OnInit, Signal, signal, WritableSignal } from '@angular/core';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { CategoryComponent } from "../category/category.component";
 import { TransactionHistoryComponent } from "../transaction-history/transaction-history.component";
@@ -28,16 +28,23 @@ export class MainDisplayComponent {
 
   budgetFirebaseService = inject(BudgetFirebaseSerice)
   private mockapi: MockApiService = inject (MockApiService)
-  // budgetService: BudgetService = inject(BudgetService)
-  overallMoney!: AllBudget;  // This contains the data from the DB (mock data)
-  //allbudget?: AllBudget;  // This is another variable you may want to initialize
-  //categoryValue: CategoryList[]  = allBudgetValue.category;
-  budget: AllBudget | null = null
-  budgetSig = this.budgetService.getBudgetSig()
+  budgetService: BudgetService = inject(BudgetService)
 
-  constructor(private budgetService: BudgetService) {
-    //this.budget = this.budgetService.getBudgetSig() 
-    console.log("main display ts", this.budgetService.getBudget())
+  budgetLocalSig: WritableSignal<AllBudget> = this.budgetService.budgetSig 
+  budgetPropsSig: Signal<Partial <AllBudget>> = computed(() => {
+      return {
+        totalBalance: this.budgetLocalSig().totalBalance,
+        salery: this.budgetLocalSig().salery,
+        totalSpent: this.budgetLocalSig().totalSpent,
+        payPeriod: this.budgetLocalSig().payPeriod
+
+      }
+
+  })
+   constructor() {
+    console.log('maindisplay Constructor')
+     
+     effect(()=> console.log("this is effect maindisplayComp", this.budgetService.budgetSig()))
 
    // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
       

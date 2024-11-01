@@ -20,12 +20,13 @@ export class AppComponent implements OnInit {
 
   budgetFirebaseService = inject(BudgetFirebaseSerice)
   documentId = 'Z73bsjXo66aVCEoBTCSJ'
-  // budgetService: BudgetService = inject(BudgetService)
+   budgetService: BudgetService = inject(BudgetService)
 
-  constructor(private budgetService: BudgetService) {
-    this.budgetFirebaseService.getBudget().subscribe((budget: AllBudget[]) => {
+  constructor() {
+    console.log("AppComponent constructor")
+    this.budgetFirebaseService.getBudget().subscribe(budget => {
       this.budgetService.budgetSig.set(budget[0]) // Set the fetched data
-      console.log("AppComponent budget = ", this.budgetService.getBudget())
+      console.log("AppComponent getbudget = ", this.budgetService.budgetSig())
     });
 
     // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { 
