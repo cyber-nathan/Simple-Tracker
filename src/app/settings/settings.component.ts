@@ -41,7 +41,7 @@ export class SettingsComponent {
 //  // private mockapi: MockApiService = inject (MockApiService)
   
  budget: AllBudget | null = null
- budgetSig = this.budgetService.getBudgetSig()
+ budgetSigValue = this.budgetService.budgetSig()
  totalBalance = model(0)  // setting the input value with value stored in firebase
  salery  = model(0)
  payPeriod = model('Bi-weekly')
@@ -75,7 +75,7 @@ export class SettingsComponent {
 }
 
   saveSettings() {
-    toObservable<AllBudget | null>(this.budgetSig).pipe(
+    toObservable<AllBudget | null>(this.budgetService.budgetSig).pipe(
       filter((value) => {return value != null}),
       exhaustMap((value) => 
          {
