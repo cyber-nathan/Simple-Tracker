@@ -27,7 +27,6 @@ export interface Tile {
 export class MainDisplayComponent {
 
   budgetFirebaseService = inject(BudgetFirebaseSerice)
-  private mockapi: MockApiService = inject (MockApiService)
   budgetService: BudgetService = inject(BudgetService)
 
   budgetLocalSig: WritableSignal<AllBudget> = this.budgetService.budgetSig 

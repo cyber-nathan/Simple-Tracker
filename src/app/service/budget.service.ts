@@ -23,12 +23,6 @@ export class BudgetService {
     console.log('budget service', Math.random())
   }
 
-  // getBudgetSig() {
-  //   return this.budgetSig
-  // }
-
-  // budget: AllBudget | null = null
-  // cateogry:CategoryList[]  = []
 
 
 }

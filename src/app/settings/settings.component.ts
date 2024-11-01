@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, model, signal } from '@angular/core';
+import { Component, computed, effect, inject, model, Signal, signal, WritableSignal } from '@angular/core';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { allBudgetValue } from '../db.data';
 import { CategoryList, AllBudget } from '../interface';
@@ -25,98 +25,32 @@ export class SettingsComponent {
   payPeriods: string[] = ['Daily','Weekly', 'Bi-weekly', 'Monthly']
   payResets: string[] = ['Daily','Weekly', 'Bi-weekly', 'Monthly']
 
-  userSettings: AllBudget  = allBudgetValue;  // This contains the data from the DB (mock data)
-  categoryValue: CategoryList[]  = allBudgetValue.category;
-  selectedCategory: any; // holds selected category
-  allbudget?: AllBudget;  // This is another variable you may want to initialize
+budgetFirebaseService = inject(BudgetFirebaseSerice)
+constructor(private budgetService: BudgetService) {
 
-
-  budgetFirebaseService = inject(BudgetFirebaseSerice)
-  // budgetService: BudgetService = inject(BudgetService)
-
-//   totalBalance: number = 0// setting the input value with value stored in firebase
-//   salery: number = 0
-//   payPeriod: string = 'Bi-weekly'
-//   payReset: string =  'Bi-weekly'
-//  // private mockapi: MockApiService = inject (MockApiService)
-  
- budget: AllBudget | null = null
- budgetSigValue = this.budgetService.budgetSig()
- totalBalance = model(0)  // setting the input value with value stored in firebase
- salery  = model(0)
- payPeriod = model('Bi-weekly')
- payReset = model('Bi-weekly')
-
- constructor(private budgetService: BudgetService) {
-  // this.budgetFirebaseService.getBudget().subscribe(budget => {
-  //   this.budgetService.setBudget(budget[0]) // Set the fetched data
-  //   console.log("settingComp budget = ", this.budgetService.getBudget())
-  // });
   effect(()=> console.log("this is effect settingComp ", this.budgetService.budgetSig()))
-  // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
-     
-   //});
+
  }
+budgetLocalSig: WritableSignal<AllBudget> = this.budgetService.budgetSig 
 
-  // constructor() {
+budgetPropsSig: Signal<Partial <AllBudget>> = computed(() => {
+    return {
+      totalBalance: this.budgetLocalSig().totalBalance,
+      salery: this.budgetLocalSig().salery,
+      payPeriod: this.budgetLocalSig().payPeriod,
+      payReset: this.budgetLocalSig().payReset
 
+    }
 
-  //   // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { 
-  //   //   this.userSettings = value
-  //   // });
-  //  // console.log(this.data)
-  // }
+})
 
-
-
-
-
-
-  ngOnInit() {
-}
 
   saveSettings() {
-    toObservable<AllBudget | null>(this.budgetService.budgetSig).pipe(
-      filter((value) => {return value != null}),
-      exhaustMap((value) => 
-         {
-          if(value) {
-
-            return this.budgetFirebaseService.saveSettings(value.id, this.totalBalance(), this.salery(), this.payPeriod(), this.payReset ()) 
-          }
-          return of('error')
-
-         })
-
-    ).subscribe()
-    // if (this.totalBalance && this.salery && this.payPeriod && this.payReset && this.budgetSig()?.id) {
-    //     let id = this.budgetSig()?.id
+    this.budgetFirebaseService.saveSettings( this.budgetLocalSig().id, this.budgetLocalSig().totalBalance,  this.budgetLocalSig().salery,  this.budgetLocalSig().payPeriod,  this.budgetLocalSig().payReset) 
 
 
-    //   this.budgetFirebaseService.saveSettings(id, this.totalBalance, this.salery, this.payPeriod, this.payReset)
-    //     .then(() => {
-    //       console.log('Settings saved successfully');
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error saving settings:', error);
-    //     });
-    // }
-    //this.mockapi.saveSettings(this.totalBalance, this.salery, this.payPeriod, this.payReset)
   }
 
-  // ngOnInit(): void {
-  //   this.trackerReset(5000); // Reset after 5 seconds
-  // }
-
-  // trackerReset(resetAfterMs: number) {
-  //   setInterval (() => {
-  //     this.userSettings[0].totalSpent = 0.00
-  //     this.categoryValue.forEach (category => {
-  //       category.spent = 0.00;
-  //       category.remaining = category.total
-  //     });
-  //   }, resetAfterMs);
-  // }
 
 
 

@@ -13,14 +13,12 @@ import { AllBudget } from './interface';
   imports: [RouterOutlet, NavbarComponent, MainDisplayComponent, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  // providers: [BudgetService]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Expense-tracker';
-
   budgetFirebaseService = inject(BudgetFirebaseSerice)
   documentId = 'Z73bsjXo66aVCEoBTCSJ'
-   budgetService: BudgetService = inject(BudgetService)
+  budgetService: BudgetService = inject(BudgetService)
 
   constructor() {
     console.log("AppComponent constructor")
@@ -29,17 +27,8 @@ export class AppComponent implements OnInit {
       console.log("AppComponent getbudget = ", this.budgetService.budgetSig())
     });
 
-    // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { 
-    //   this.userSettings = value
-    // });
-   // console.log(this.data)
+
   }
 
-  ngOnInit(): void {
-    // this.budgetFirebaseService.getBudget().subscribe(budget => {
-    //   this.budgetService.setBudget(budget[0]);
-    //   console.log("AppComponent budget = ", this.budgetService.getBudget());
-    // });
-  }
 
 }

@@ -25,7 +25,7 @@ export class BudgetFirebaseSerice {
 
     saveSettings(id: string, balance: number, salery: number, payPeriod: string, payReset: string): Promise<void> {
       const budgetDocRef = doc(this.firestore, 'Budget Info', id); // Create a document reference
-
+console.log("reee")
       // Create an object with the updated data
       const updatedData = {
           totalBalance: balance,
@@ -33,6 +33,7 @@ export class BudgetFirebaseSerice {
           payPeriod: payPeriod,
           payReset: payReset,
       };
+      console.log('updated settings data = ', updatedData)
 
       // Update the document with the new data
       return updateDoc(budgetDocRef, updatedData)
