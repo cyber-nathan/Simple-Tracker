@@ -28,14 +28,16 @@ export class MainDisplayComponent {
 
   budgetFirebaseService = inject(BudgetFirebaseSerice)
   private mockapi: MockApiService = inject (MockApiService)
-  budgetService: BudgetService = inject(BudgetService)
+  // budgetService: BudgetService = inject(BudgetService)
   overallMoney!: AllBudget;  // This contains the data from the DB (mock data)
   //allbudget?: AllBudget;  // This is another variable you may want to initialize
   //categoryValue: CategoryList[]  = allBudgetValue.category;
   budget: AllBudget | null = null
-  constructor() {
-    this.budget = this.budgetService.getBudget() 
-    console.log("main display ts", this.budget)
+  budgetSig = this.budgetService.getBudgetSig()
+
+  constructor(private budgetService: BudgetService) {
+    //this.budget = this.budgetService.getBudgetSig() 
+    console.log("main display ts", this.budgetService.getBudget())
 
    // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
       

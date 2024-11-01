@@ -2,12 +2,13 @@ import { inject, Injectable } from "@angular/core";
 import { collection, collectionData, doc, docData, Firestore, updateDoc } from "@angular/fire/firestore";
 import { Observable, tap } from "rxjs";
 import { AllBudget, CategoryList } from "../interface";
+import { BudgetService } from "./budget.service";
 
 @Injectable({providedIn: 'root'})
 export class BudgetFirebaseSerice {
     firestore = inject(Firestore);
     BudgetCollection = collection(this.firestore, 'Budget Info');
-
+    budgetService: BudgetService = inject(BudgetService)
     getBudget(): Observable<AllBudget[]> { // gets the collection as array from firebase
         return collectionData(this.BudgetCollection, { idField: 'id' }) as Observable<AllBudget[]>;
       }

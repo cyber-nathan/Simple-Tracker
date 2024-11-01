@@ -1,4 +1,4 @@
-import { Component, effect, inject, model, signal } from '@angular/core';
+import { Component, computed, effect, inject, model, signal } from '@angular/core';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { allBudgetValue } from '../db.data';
 import { CategoryList, AllBudget } from '../interface';
@@ -32,7 +32,7 @@ export class SettingsComponent {
 
 
   budgetFirebaseService = inject(BudgetFirebaseSerice)
-  budgetService: BudgetService = inject(BudgetService)
+  // budgetService: BudgetService = inject(BudgetService)
 
 //   totalBalance: number = 0// setting the input value with value stored in firebase
 //   salery: number = 0
@@ -46,12 +46,13 @@ export class SettingsComponent {
  salery  = model(0)
  payPeriod = model('Bi-weekly')
  payReset = model('Bi-weekly')
- constructor() {
+
+ constructor(private budgetService: BudgetService) {
   // this.budgetFirebaseService.getBudget().subscribe(budget => {
   //   this.budgetService.setBudget(budget[0]) // Set the fetched data
   //   console.log("settingComp budget = ", this.budgetService.getBudget())
   // });
-  effect(()=> console.log("this is effect settingComp ", this.budgetService.budgetSig(), this.totalBalance()))
+  effect(()=> console.log("this is effect settingComp ", this.budgetService.budgetSig()))
   // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
      
    //});

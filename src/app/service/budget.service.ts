@@ -6,8 +6,10 @@ import { AllBudget, CategoryList } from '../interface';
 })
 export class BudgetService {
 
-  budgetSig: WritableSignal<AllBudget | null> = signal<AllBudget | null>(null)
+  budgetSig = signal<AllBudget | null>(null)
   cateogrySig = signal<CategoryList[] | null>(null)
+  budget: AllBudget | null = null
+  cateogry:CategoryList[]  = []
 
   constructor() {
     console.log('budget service', Math.random())
@@ -17,8 +19,7 @@ export class BudgetService {
     return this.budgetSig
   }
 
-  budget: AllBudget | null = null
-  cateogry:CategoryList[]  = []
+
 
   getBudget() {
     return this.budget
