@@ -48,16 +48,10 @@ export class CategoryComponent {
   readonly dialog = inject(MatDialog);
 
   private mockapi: MockApiService = inject (MockApiService)
+  
   constructor() {
-    // this.budgetService.getBudgetById(this.documentId).subscribe(budget => {
-    //   this.budgetService.budgetSig.set(budget); // Set the fetched data
-    //   console.log("this is budget",this.budgetService.budgetSig())
-    // });
-    // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
-    //   this.categoryValue = value.category
-    //   this.fixedExpenseValue =value.fixedExpense
-    //   this.allbudget = value
-    // });
+  
+
   }
 
   onRowEditInit(fixedExpense: fixedExpenseList) {

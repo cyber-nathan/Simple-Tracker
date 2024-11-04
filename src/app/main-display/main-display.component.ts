@@ -43,7 +43,7 @@ export class MainDisplayComponent {
    constructor() {
     console.log('maindisplay Constructor')
      
-     effect(()=> console.log("this is effect maindisplayComp", this.budgetService.budgetSig()))
+     effect(()=> console.log("this is effect maindisplayComp", this.budgetService.budgetSig().category))
 
    // this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
       
