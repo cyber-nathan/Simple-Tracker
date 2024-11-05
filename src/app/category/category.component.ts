@@ -1,4 +1,4 @@
-import { Component,inject } from '@angular/core';
+import { Component,effect,inject } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
@@ -49,10 +49,10 @@ export class CategoryComponent {
 
   private mockapi: MockApiService = inject (MockApiService)
   
-  constructor() {
-  
+  // constructor() {
+  //   effect(()=> console.log("this is effect in categorycomponent", this.budgetService.categoriesSig()))
 
-  }
+  // }
 
   onRowEditInit(fixedExpense: fixedExpenseList) {
     this.clonedFixedExpense[fixedExpense.id ] = { ...fixedExpense };

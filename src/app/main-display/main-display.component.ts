@@ -38,6 +38,7 @@ export class MainDisplayComponent {
         payPeriod: this.budgetLocalSig().payPeriod
 
       }
+      
 
   })
    constructor() {

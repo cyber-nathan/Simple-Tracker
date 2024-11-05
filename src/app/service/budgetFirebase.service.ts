@@ -16,9 +16,14 @@ export class BudgetFirebaseSerice {
         return collectionData(this.budgetCollection, { idField: 'id' }) as Observable<AllBudget[]>;
       }
 
-    // getCategories(): Observable<(AllBudget & { categories: Category[] })[]> {
-
-    // }
+    getCategories(budgetId: string ): Observable<CategoryList[]> {
+      const categoryCollection = collection(this.firestore, `Budget Info/${budgetId}/category`);
+      return collectionData(categoryCollection, { idField: 'id' }) as Observable<CategoryList[]>;
+    }
+    getFixedExpenses(budgetId: string): Observable<fixedExpenseList[]> {
+      const fixedExpenseCollection = collection(this.firestore, `Budget Info/${budgetId}/fixedExpense`);
+      return collectionData(fixedExpenseCollection, {idField: 'id'}) as Observable<fixedExpenseList[]>
+    }
       
 
     saveSettings(id: string, balance: number, salery: number, payPeriod: string, payReset: string): Promise<void> {

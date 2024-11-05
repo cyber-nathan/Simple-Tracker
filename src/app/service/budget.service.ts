@@ -1,5 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { AllBudget, CategoryList } from '../interface';
+import { AllBudget, CategoryList, fixedExpenseList } from '../interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,8 @@ export class BudgetService {
     fixedExpense: [],
     category: []
   })
- // cateogrySig = signal<CategoryList[] | null>(null)
+ categoriesSig = signal<CategoryList[]>([]);
+ fixedExpenseSig = signal<fixedExpenseList[]>([]);
 
   constructor() {
     console.log('budget service', Math.random())
