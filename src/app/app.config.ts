@@ -6,7 +6,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {getFirestore, provideFirestore} from '@angular/fire/firestore'
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-
+import { provideHttpClient } from '@angular/common/http';
 const firebaseConfig = {
   apiKey: "AIzaSyBveq5t7kHdmoPfDvDiwMotfIALqaCDoEo",
   authDomain: "budget-tracker-b4a7b.firebaseapp.com",
@@ -19,6 +19,7 @@ const firebaseConfig = {
 export const appConfig: ApplicationConfig = {
   providers: [
     //provideZoneChangeDetection({ eventCoalescing: true }), 
+    provideHttpClient(),
     provideRouter(routes), 
     provideClientHydration(),
     provideAnimationsAsync(),

@@ -1,27 +1,18 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { AllBudget, CategoryList, fixedExpenseList } from '../interface';
+import { AllBudget, BudgetInfo, CategoryList, fixedExpenseList } from '../interface';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BudgetService {
+  private baseUrl = 'http://localhost:8080/api/v1/budgets'
 
-  budgetSig: WritableSignal<AllBudget > = signal<AllBudget >({
-    id: 'Crunching data',
-    totalBalance: 0,
-    afterExpense: 0,
-    salery: 0,
-    totalSpent: 0,
-    payPeriod: 'Crunching data',
-    payReset: 'Crunching data',
-    fixedExpense: [],
-    category: []
-  })
- categoriesSig = signal<CategoryList[]>([]);
- fixedExpenseSig = signal<fixedExpenseList[]>([]);
+   constructor(private http: HttpClient) { }
 
-  constructor() {
-    console.log('budget service', Math.random())
+  getBudgets(): Observable<BudgetInfo[]> {
+    return this.http.get<BudgetInfo[]>(this.baseUrl)
   }
 
 

@@ -10,6 +10,18 @@ export interface AllBudget {
 category: CategoryList []
 }
 
+export interface BudgetInfo { // new
+    id: string;
+    totalBalance: number;
+    afterExpense: number;
+    salary: number;
+    totalSpent: number;
+    payPeriod: string;
+    payReset: string;
+    fixedExpense: fixedExpenseList[]
+category: CategoryList []
+}
+
 export interface CategoryList {
     id: string;
     title: string;

@@ -10,26 +10,26 @@
       align-items: center;
     ">
     <p-floatLabel>
-      <p-inputNumber inputId="totalBalance" [(ngModel)]="budgetLocalSig().totalBalance" [min]="0" mode="decimal" [minFractionDigits]="1"
+      <p-inputNumber inputId="totalBalance" [(ngModel)]="totalBalance" [min]="0" mode="decimal" [minFractionDigits]="1"
         [maxFractionDigits]="2" [style]="{ width: '25rem' }"/>
       <label for="spent">Enter Total Balance </label>
     </p-floatLabel>
 
     <p-floatLabel>
-      <p-inputNumber inputId="salery" [(ngModel)]="budgetLocalSig().salery" [min]="0" mode="decimal" [minFractionDigits]="1"
+      <p-inputNumber inputId="salery" [(ngModel)]="salary" [min]="0" mode="decimal" [minFractionDigits]="1"
         [maxFractionDigits]="2" [style]="{ width: '25rem' }"/>
       <label for="spent">Enter Salery </label>
     </p-floatLabel>
 
     <p-floatLabel>
-      <p-dropdown [options]="payPeriods" [(ngModel)]="budgetLocalSig().payPeriod" [checkmark]="true" 
+      <p-dropdown [options]="payPeriods" [(ngModel)]="payPeriod" [checkmark]="true" 
         [showClear]="true" placeholder="Select Pay-period" [style]="{ width: '25rem' }" >
       </p-dropdown>
       <label for="payPeriod">Select Pay-period</label>
     </p-floatLabel>
 
     <p-floatLabel>
-      <p-dropdown [options]="payResets" [(ngModel)]="budgetLocalSig().payReset" [checkmark]="true" 
+      <p-dropdown [options]="payResets" [(ngModel)]="payReset" [checkmark]="true" 
         [showClear]="true" placeholder="Select Reset-period" [style]="{ width: '25rem' }" >
       </p-dropdown>
       <label for="payReset">Select reset-period</label>

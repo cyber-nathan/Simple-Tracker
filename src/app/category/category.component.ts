@@ -22,7 +22,7 @@ import { MessageService } from 'primeng/api';
 import { AddFixedExpenseComponent } from '../add-fixed-expense/add-fixed-expense.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { BudgetService } from '../service/budget.service';
-import { BudgetFirebaseSerice } from '../service/budgetFirebase.service';
+//import { BudgetFirebaseSerice } from '../service/budgetFirebase.service';
 
 @Component({
   selector: 'app-category',
@@ -34,7 +34,7 @@ import { BudgetFirebaseSerice } from '../service/budgetFirebase.service';
 })
 export class CategoryComponent {
 
-  budgetFirebaseService = inject(BudgetFirebaseSerice)
+ // budgetFirebaseService = inject(BudgetFirebaseSerice)
    documentId = 'Z73bsjXo66aVCEoBTCSJ'
    budgetService: BudgetService = inject(BudgetService)
 
