@@ -19,6 +19,7 @@ export class AppComponent {
   //budgetFirebaseService = inject(BudgetFirebaseSerice)
   documentId = 'Z73bsjXo66aVCEoBTCSJ'
   budgetService: BudgetService = inject(BudgetService)
+  
 
 
 

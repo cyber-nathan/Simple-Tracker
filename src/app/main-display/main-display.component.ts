@@ -25,21 +25,20 @@ export interface Tile {
   templateUrl: './main-display.component.html',
   styleUrl: './main-display.component.css'
 })
-export class MainDisplayComponent  implements OnInit{
+export class MainDisplayComponent  {
   
   budgetInfo: BudgetInfo[] = []
+  budgetBehave$ = this.budgetService.budget$
+  budget$ = this.budgetService.getBudgets()
+  budgetSig = signal<BudgetInfo | null>(null)
+  
 
-  constructor(private budgetService: BudgetService){}
-  ngOnInit(): void {
-    this.getBudgets()
+  constructor(private budgetService: BudgetService){
+
+    this.budget$.subscribe(val => this.budgetService.setBudgets(val))
   }
 
-  private getBudgets() {
-    this.budgetService.getBudgets().subscribe(data => {
-      this.budgetInfo = data
-      console.log(data)
-    })
-  }
+  
   
 
 

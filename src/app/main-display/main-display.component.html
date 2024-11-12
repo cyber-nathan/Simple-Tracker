@@ -1,5 +1,7 @@
-<div class="grid" style="width: 100%;">
-    <!-- First Row: Cards Section -->
+<div class="grid" style="width: 100%;" >
+    @if(budgetBehave$ | async; as budget) {
+
+  <!-- First Row: Cards Section -->
     <div class="col">
         <div class="pl-3 pt-3 h-8rem p-d-flex p-ai-center p-jc-center p-m-2 p-shadow-2 border-round">
             <mat-card appearance="outlined" class="shadow-4"style="height: 6rem; width: 100%; display: flex; justify-content: center; align-items: center;">
@@ -7,7 +9,7 @@
                     <mat-card-title>Total Balance</mat-card-title>
                   </mat-card-header>
                 <mat-card-content style="font-size: 25px; " >
-                        {{budgetInfo[0].totalBalance  | currency: 'USD'}} 
+                        {{budget.totalBalance  | currency: 'USD'}} 
 
                 </mat-card-content>
             </mat-card>
@@ -27,9 +29,9 @@
         <div class=" pt-3 h-8rem p-d-flex p-ai-center p-jc-center p-m-2 p-shadow-2 border-round">
             <mat-card appearance="outlined" class="shadow-4" style="height: 6rem; width: 100%; display: flex; justify-content: center; align-items: center;">
                 <mat-card-header style="padding-bottom: 1rem;">
-                    <mat-card-title>Salary ({{budgetInfo[0].payPeriod}})</mat-card-title>
+                    <mat-card-title>Salary ({{budget.payPeriod}})</mat-card-title>
                   </mat-card-header>
-                <mat-card-content style="font-size: 25px;"> {{budgetInfo[0].salary | currency: 'USD'}} </mat-card-content>
+                <mat-card-content style="font-size: 25px;"> {{budget.salary | currency: 'USD'}} </mat-card-content>
             </mat-card>
             
         </div>
@@ -40,10 +42,15 @@
                 <mat-card-header style="padding-bottom: 1rem;">
                     <mat-card-title>Total Spent</mat-card-title>
                   </mat-card-header>
-                <mat-card-content style="font-size: 25px;"> {{budgetInfo[0].totalSpent | currency: 'USD'}} </mat-card-content>
+                <mat-card-content style="font-size: 25px;"> {{budget.totalSpent | currency: 'USD'}} </mat-card-content>
             </mat-card>
         </div>
     </div>
+}
+@else {
+    loading...
+    
+}  
 </div>
 
 <!-- Second Row: Category and Transaction Section -->
@@ -58,6 +65,7 @@
             <app-transaction-history></app-transaction-history>
         </div>
     </div>
+
 </div>
 
 
