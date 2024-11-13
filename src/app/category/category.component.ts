@@ -4,7 +4,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
 import { TableModule } from 'primeng/table';
-import { AllBudget, CategoryList, fixedExpenseList } from '../interface';
+import { AllBudget, BudgetInfo, Categories, CategoryList, fixedExpenseList, FixedExpenses } from '../interface';
 import { allBudgetValue } from '../db.data';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { AddCategoryDialogComponent } from '../add-category-dialog/add-category-dialog.component';
@@ -34,25 +34,37 @@ import { BudgetService } from '../service/budget.service';
 })
 export class CategoryComponent {
 
- // budgetFirebaseService = inject(BudgetFirebaseSerice)
-   documentId = 'Z73bsjXo66aVCEoBTCSJ'
-   budgetService: BudgetService = inject(BudgetService)
-
-
-  categoryValue!: CategoryList[]
-  allbudget?: AllBudget;  // This is another variable you may want to initialize
+  // categoryValue!: CategoryList[]
+  // allbudget?: AllBudget;  // This is another variable you may want to initialize
   fixedExpenseValue!: fixedExpenseList[]
   clonedFixedExpense: { [s: string]: fixedExpenseList } = {};
   afterExpense?: number;
 
   readonly dialog = inject(MatDialog);
 
-  private mockapi: MockApiService = inject (MockApiService)
+  //private mockapi: MockApiService = inject (MockApiService)
   
-  // constructor() {
-  //   effect(()=> console.log("this is effect in categorycomponent", this.budgetService.categoriesSig()))
+  fixedexpense: FixedExpenses[] = []
+  categories: Categories[] = []
+  budgetInfo: BudgetInfo | null = null 
 
-  // }
+  constructor(private budgetService: BudgetService){}
+
+  ngOnInit(): void {
+    this.budgetService.budget$.subscribe((budgetInfo) => {
+      this.afterExpense =budgetInfo?.afterExpense
+      if (budgetInfo) {
+        this.budgetService.getFixedExpense(budgetInfo.id).subscribe(data => {
+          this.fixedexpense = data
+          console.log("this is fixed expense ", this.fixedexpense)
+        this.budgetService.getCategoreis(budgetInfo.id).subscribe(catData => {
+          this.categories = catData
+        })
+        })
+      }
+    })
+  }
+
 
   onRowEditInit(fixedExpense: fixedExpenseList) {
     this.clonedFixedExpense[fixedExpense.id ] = { ...fixedExpense };
@@ -62,7 +74,7 @@ export class CategoryComponent {
 onRowEditSave(fixedExpense: fixedExpenseList) {
     if (fixedExpense.spent > 0) {
       console.log("clone", this.clonedFixedExpense[fixedExpense.id ].spent)
-      this.mockapi.updatingFixedExpense(fixedExpense.spent, this.clonedFixedExpense[fixedExpense.id ].spent)
+    //  this.mockapi.updatingFixedExpense(fixedExpense.spent, this.clonedFixedExpense[fixedExpense.id ].spent)
         delete this.clonedFixedExpense[fixedExpense.id ];
         console.log(fixedExpense)
         
@@ -108,12 +120,12 @@ onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
   }
 
   deleteCat(catId: number) {
-    this.mockapi.deleteCat(catId)
+  //  this.mockapi.deleteCat(catId)
 
   }
   
   deleteFixedExpense(fixedId: number) {
-    this.mockapi.deleteFixedExpense(fixedId)
+   // this.mockapi.deleteFixedExpense(fixedId)
 
   }
   

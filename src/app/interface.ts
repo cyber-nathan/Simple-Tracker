@@ -11,15 +11,38 @@ category: CategoryList []
 }
 
 export interface BudgetInfo { // new
-    id: string;
+    id: number;
     totalBalance: number;
     afterExpense: number;
     salary: number;
     totalSpent: number;
     payPeriod: string;
     payReset: string;
-    fixedExpense: fixedExpenseList[]
-category: CategoryList []
+    fixedExpense: FixedExpenses[]
+category: Categories []
+}
+
+export interface FixedExpenses {
+    id: number;
+    title: string;
+    spent: number;
+}
+
+export interface Categories {
+    id: number;
+    title: string;
+    total: number;
+    spent: number;
+    remaining: number;
+    transaction: Transactions []
+}
+
+export interface Transactions {
+    id: number;
+    date: string;
+    description: string;
+    spent: number;
+    transactionCategory: string;
 }
 
 export interface CategoryList {

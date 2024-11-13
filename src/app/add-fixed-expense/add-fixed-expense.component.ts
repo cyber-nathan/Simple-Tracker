@@ -11,6 +11,8 @@ import { allBudgetValue } from '../db.data';
 import { MockApiService } from '../service/mock-api.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { BudgetInfo, fixedExpenseList, FixedExpenses} from '../interface';
+import { BudgetService } from '../service/budget.service';
 @Component({
   selector: 'app-add-fixed-expense',
   standalone: true,
@@ -22,6 +24,7 @@ export class AddFixedExpenseComponent {
   private mockapi: MockApiService = inject (MockApiService)
   title!: string
   cost!: number
+
 
   addFixedExpense() {
     //console.log("add category")

@@ -1,5 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { AllBudget, BudgetInfo, CategoryList, fixedExpenseList } from '../interface';
+import { AllBudget, BudgetInfo, Categories, CategoryList, fixedExpenseList, FixedExpenses, Transactions } from '../interface';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 
@@ -22,6 +22,18 @@ export class BudgetService {
         this.budgetSource.next(budgets);
       })
     );
+  }
+
+  getFixedExpense(budgetId: number): Observable<FixedExpenses[]> {
+    return this.http.get<FixedExpenses[]>(`${this.baseUrl}/${budgetId}/fixed_expense`)
+  }
+  
+  getCategoreis(budgetId: number): Observable<Categories[]> {
+    return this.http.get<Categories[]>(`${this.baseUrl}/${budgetId}/category`)
+  }
+
+  getTransactions(budgetId: number, categoryId: number): Observable<Transactions[]> {
+    return this.http.get<Transactions[]>(`${this.baseUrl}/${budgetId}/category/${categoryId}/transaction`)
   }
 
   setBudgets(data: BudgetInfo){

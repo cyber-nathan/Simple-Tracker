@@ -7,12 +7,13 @@ import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import { ListboxModule } from 'primeng/listbox';
 import { DropdownModule } from 'primeng/dropdown';
-import { AllBudget, CategoryList, TransactionList } from '../interface';
+import { AllBudget, BudgetInfo, Categories, CategoryList, TransactionList } from '../interface';
 import { allBudgetValue } from '../db.data';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { TransactionDialogComponent } from '../transaction-dialog/transaction-dialog.component';
 import { MockApiService } from '../service/mock-api.service';
 import { ButtonModule } from 'primeng/button';
+import { BudgetService } from '../service/budget.service';
 
 
 @Component({
@@ -30,10 +31,26 @@ export class TransactionHistoryComponent {
   allbudget?: AllBudget;  // This is another variable you may want to initialize
   id!: number;
 
-  constructor() {
-    this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
-      this.categoryValue = value.category
-    });
+  // constructor() {
+  //   this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
+  //     this.categoryValue = value.category
+  //   });
+  // }
+
+  categories: Categories[] = []
+  budgetInfo: BudgetInfo | null = null 
+
+  constructor(private budgetService: BudgetService){}
+
+  ngOnInit(): void {
+    this.budgetService.budget$.subscribe((budgetInfo) => {
+      if (budgetInfo) {
+        this.budgetService.getCategoreis(budgetInfo.id).subscribe(catData => {
+          this.categories = catData
+        })
+
+      }
+    })
   }
 
     // Retrieve transactions based on the selected category
@@ -72,16 +89,4 @@ export class TransactionHistoryComponent {
   }
 
 
-
-  
-
-
-    // TransactionContent: {id: number, date: string, desciption: string, category: string, spent: number, remaining: number}[] = [
-
-  //   {id: 1, date: '2024-10-01', desciption: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", category: "Food", spent: 50.00, remaining: 20.00},
-  //   {id: 2, date: '2024-01-31', desciption: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", category: "Food", spent: 55.00, remaining: 22.00},
-  //   {id: 3, date: '2024-02-15', desciption: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", category: "Persnal", spent: 52.50, remaining: 21.00},
-  //   {id: 4, date: '2024-02-29', desciption: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", category: "Bills", spent: 56.00, remaining: 23.00},
-  //   {id: 5, date: '2024-03-15', desciption: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", category: "Food", spent: 53.75, remaining: 21.50}
-  // ];
 }
