@@ -29,12 +29,12 @@ export interface FixedExpenses {
 }
 
 export interface Categories {
-    id: number;
+    id?: number;
     title: string;
     total: number;
     spent: number;
     remaining: number;
-    transaction: Transactions []
+    transactions: Transactions []
 }
 
 export interface Transactions {

@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import { ListboxModule } from 'primeng/listbox';
 import { DropdownModule } from 'primeng/dropdown';
-import { AllBudget, BudgetInfo, Categories, CategoryList, TransactionList } from '../interface';
+import { AllBudget, BudgetInfo, Categories, CategoryList, TransactionList, Transactions } from '../interface';
 import { allBudgetValue } from '../db.data';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { TransactionDialogComponent } from '../transaction-dialog/transaction-dialog.component';
@@ -47,6 +47,7 @@ export class TransactionHistoryComponent {
       if (budgetInfo) {
         this.budgetService.getCategoreis(budgetInfo.id).subscribe(catData => {
           this.categories = catData
+          console.log("this is categories in transaction ", this.categories[0].transactions)
         })
 
       }
@@ -56,11 +57,11 @@ export class TransactionHistoryComponent {
     // Retrieve transactions based on the selected category
   get transactionValue()  {
       if (this.selectedCategory) {
-        return this.selectedCategory.transaction; // Display transactions for the selected category
+        return this.selectedCategory.transactions; // Display transactions for the selected category
       }
       // display all transaction when no category is selected
-      const allTransactions = this.categoryValue.reduce((allTransactions: TransactionList[], category: CategoryList) => { // reduce method processes each element in array (CategoryList in this.categoryValue)
-        return allTransactions.concat(category.transaction);
+      const allTransactions = this.categories.reduce((allTransactions: Transactions[], category: Categories) => { // reduce method processes each element in array (CategoryList in this.categoryValue)
+        return allTransactions.concat(category.transactions);
       }, []); // learn more
 
         // Sort transactions by date in descending order (most recent first)
@@ -72,7 +73,7 @@ export class TransactionHistoryComponent {
     }
 
     deleteTransaction(transiId: number, catTitle: string, spent: number) {
-      this.mockapi.deleteTransaction( transiId, catTitle, spent )
+     // this.mockapi.deleteTransaction( transiId, catTitle, spent )
 
 
 

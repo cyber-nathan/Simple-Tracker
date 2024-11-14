@@ -32,7 +32,7 @@ export class BudgetService {
     return this.http.get<Categories[]>(`${this.baseUrl}/${budgetId}/category`)
   }
 
-  getTransactions(budgetId: number, categoryId: number): Observable<Transactions[]> {
+  getTransactions(categoryId: number, budgetId: number ): Observable<Transactions[]> {
     return this.http.get<Transactions[]>(`${this.baseUrl}/${budgetId}/category/${categoryId}/transaction`)
   }
 
@@ -54,6 +54,16 @@ export class BudgetService {
     );
 
   }
+
+  addCategory(catData: Categories, budgetId: number) {
+    return this.http.post<Categories>(`${this.baseUrl}/${budgetId}/category`, catData)
+  }
+
+    deleteCategory(catId: number, budgetId: number) {
+    console.log("in serivce")
+    return this.http.delete(`${this.baseUrl}/${budgetId}/category/${catId}`)
+  }
+
 
 
 

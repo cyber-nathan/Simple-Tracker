@@ -53,6 +53,7 @@ export class CategoryComponent {
   ngOnInit(): void {
     this.budgetService.budget$.subscribe((budgetInfo) => {
       this.afterExpense =budgetInfo?.afterExpense
+      this.budgetInfo = budgetInfo
       if (budgetInfo) {
         this.budgetService.getFixedExpense(budgetInfo.id).subscribe(data => {
           this.fixedexpense = data
@@ -120,7 +121,12 @@ onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
   }
 
   deleteCat(catId: number) {
-  //  this.mockapi.deleteCat(catId)
+    console.log("testing", this.budgetInfo)
+
+    if(this.budgetInfo) {
+      this.budgetService.deleteCategory(catId, this.budgetInfo.id)
+      console.log("this is cat id", catId)
+    }
 
   }
   

@@ -11,6 +11,8 @@ import { allBudgetValue } from '../db.data';
 import { MockApiService } from '../service/mock-api.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { BudgetService } from '../service/budget.service';
+import { Categories } from '../interface';
 @Component({
 
   selector: 'app-add-category-dialog',
@@ -23,14 +25,42 @@ export class AddCategoryDialogComponent {
   private mockapi: MockApiService = inject (MockApiService)
   title!: string
   totalAmount!: number
-  
-
+  budgetId = 0
+  categories: Categories[] = []
+  constructor(private budgetService: BudgetService){}
+  ngOnInit(): void {
+    this.budgetService.budget$.subscribe((budgetInfo) => {
+      if (budgetInfo) {
+       this.budgetId = budgetInfo.id
+       this.budgetService.getCategoreis(budgetInfo.id).subscribe(catData => {
+        this.categories = catData
+      })
+      }
+    })
+  }
 
   addCategory() {
-    console.log("add category")
-    this.mockapi.addCat(this.title, this.totalAmount)
-    //allBudgetValue.category.push({id: allBudgetValue.category.length, title: this.title, total: parseFloat(this.totalAmount), spent: 0,  remaining:  parseFloat(this.totalAmount), transaction: []} );
-    
+    if (this.budgetId && this.title && this.totalAmount) {
+      const newCategory: Categories = {
+        id: undefined, // Placeholder, backend will assign the real id
+        title: this.title,
+        total: this.totalAmount,
+        spent: 0, // Initial spent amount is 0
+        remaining: this.totalAmount, // Initial remaining is equal to total
+        transactions: [] // Start with an empty transactions array
+      };
+  
+      // Send request to backend, expecting the complete category object with id in response
+      this.budgetService.addCategory(newCategory, this.budgetId).subscribe({
+        next: (addedCategory) => {
+          console.log('Category added:', addedCategory);
+          this.categories.push(addedCategory); // Update the local categories list with id from backend
+        },
+        error: (error) => {
+          console.error('Error adding category:', error);
+        }
+      });
+    }
   }
 
 }
