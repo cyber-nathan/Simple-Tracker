@@ -7,11 +7,13 @@ import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { SettingsComponent } from '../settings/settings.component';
+import { MatButtonModule } from '@angular/material/button';
+import { BudgetService } from '../service/budget.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MenubarModule, MatToolbarModule,MatIconModule, MenuModule, ButtonModule, MatDialogModule],
+  imports: [MenubarModule, MatButtonModule, MatToolbarModule,MatIconModule, MenuModule, ButtonModule, MatDialogModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -39,6 +41,7 @@ export class NavbarComponent {
 }
 
 readonly dialog = inject(MatDialog);
+budgetService: BudgetService = inject(BudgetService)
 
 openDialog() {
   const dialogRef = this.dialog.open(SettingsComponent);
@@ -47,7 +50,16 @@ openDialog() {
     console.log(`Dialog result: ${result}`);
   });
 }
-
+// deleteTest()  {
+//   this.budgetService.dummyDelete().subscribe({
+//     next: (val) => {
+//       console.log('::dummydelete next',val)
+//     },
+//     error:(error) => {
+//       console.log("::dummyDelete error", error)
+//     }
+//   })
+// }
 
 
 }

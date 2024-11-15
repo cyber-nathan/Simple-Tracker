@@ -124,8 +124,16 @@ onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
     console.log("testing", this.budgetInfo)
 
     if(this.budgetInfo) {
-      this.budgetService.deleteCategory(catId, this.budgetInfo.id)
-      console.log("this is cat id", catId)
+      this.budgetService.deleteCategory(catId, this.budgetInfo.id).subscribe({
+        next: (val) => {
+          console.log('::deleteCat next',val)
+        },
+        error:(error) => {
+          console.log("::deleteCat error", error)
+        }
+      })
+
+
     }
 
   }

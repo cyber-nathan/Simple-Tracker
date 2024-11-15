@@ -7,6 +7,8 @@ import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class BudgetService {
+  //private baseUrl2 ='http://localhost:8080/api/v1/budget/1/category/4'
+
   private baseUrl = 'http://localhost:8080/api/v1/budget'
   private budgetSource = new BehaviorSubject<BudgetInfo |null>(null)
   budget$ = this.budgetSource.asObservable(); // Expose the budget data as an observable
@@ -59,11 +61,17 @@ export class BudgetService {
     return this.http.post<Categories>(`${this.baseUrl}/${budgetId}/category`, catData)
   }
 
-    deleteCategory(catId: number, budgetId: number) {
-    console.log("in serivce")
+  deleteCategory(catId: number, budgetId: number) {
+    console.log("in serivce",  budgetId, catId)
+    console.log(`${this.baseUrl}/${budgetId}/category/${catId}`)
     return this.http.delete(`${this.baseUrl}/${budgetId}/category/${catId}`)
   }
 
+  // dummyDelete() {
+  //   console.log(";;dummyDelete")
+  //   console.log("dummy", this.baseUrl2)
+  //   return this.http.delete(`${this.baseUrl2}`,  {responseType: 'text'})
+  // }
 
 
 
