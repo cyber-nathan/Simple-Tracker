@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import { ListboxModule } from 'primeng/listbox';
 import { DropdownModule } from 'primeng/dropdown';
-import { AllBudget, BudgetInfo, Categories, CategoryList, TransactionList, Transactions } from '../interface';
+import { AllBudget, BudgetInfo, Category, CategoryList, TransactionList, Transaction } from '../interface';
 import { allBudgetValue } from '../db.data';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { TransactionDialogComponent } from '../transaction-dialog/transaction-dialog.component';
@@ -37,7 +37,7 @@ export class TransactionHistoryComponent {
   //   });
   // }
 
-  categories: Categories[] = []
+  categories: Category[] = []
   budgetInfo: BudgetInfo | null = null 
 
   constructor(private budgetService: BudgetService){}
@@ -45,7 +45,7 @@ export class TransactionHistoryComponent {
   ngOnInit(): void {
     this.budgetService.budget$.subscribe((budgetInfo) => {
       if (budgetInfo) {
-        this.budgetService.getCategoreis(budgetInfo.id).subscribe(catData => {
+        this.budgetService.getCategoryList(budgetInfo.id).subscribe(catData => {
           this.categories = catData
           console.log("this is categories in transaction ", this.categories[0].transactions)
         })
@@ -60,7 +60,7 @@ export class TransactionHistoryComponent {
         return this.selectedCategory.transactions; // Display transactions for the selected category
       }
       // display all transaction when no category is selected
-      const allTransactions = this.categories.reduce((allTransactions: Transactions[], category: Categories) => { // reduce method processes each element in array (CategoryList in this.categoryValue)
+      const allTransactions = this.categories.reduce((allTransactions: Transaction[], category: Category) => { // reduce method processes each element in array (CategoryList in this.categoryValue)
         return allTransactions.concat(category.transactions);
       }, []); // learn more
 

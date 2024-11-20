@@ -18,26 +18,26 @@ export interface BudgetInfo { // new
     totalSpent: number;
     payPeriod: string;
     payReset: string;
-    fixedExpense: FixedExpenses[]
-category: Categories []
+    fixedExpense: FixedExpense[]
+category: Category []
 }
 
-export interface FixedExpenses {
-    id: number;
+export interface FixedExpense {
+    id?: number;
     title: string;
     spent: number;
 }
 
-export interface Categories {
+export interface Category {
     id?: number;
     title: string;
     total: number;
     spent: number;
     remaining: number;
-    transactions: Transactions []
+    transactions: Transaction []
 }
 
-export interface Transactions {
+export interface Transaction {
     id: number;
     date: string;
     description: string;

@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { Component, Inject, inject } from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import {MatButtonModule} from '@angular/material/button';
@@ -11,8 +11,9 @@ import { allBudgetValue } from '../db.data';
 import { MockApiService } from '../service/mock-api.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { BudgetInfo, fixedExpenseList, FixedExpenses} from '../interface';
+import { BudgetInfo, fixedExpenseList, FixedExpense} from '../interface';
 import { BudgetService } from '../service/budget.service';
+import { CategoryComponent } from '../category/category.component';
 @Component({
   selector: 'app-add-fixed-expense',
   standalone: true,
@@ -22,13 +23,31 @@ import { BudgetService } from '../service/budget.service';
 })
 export class AddFixedExpenseComponent {
   private mockapi: MockApiService = inject (MockApiService)
+  readonly dialogRef = inject(MatDialogRef<AddFixedExpenseComponent>);
+  readonly data = inject(MAT_DIALOG_DATA);
+  fixedexpense: FixedExpense[] = [];
+  constructor(private budgetService: BudgetService){}
+
+
+
   title!: string
   cost!: number
 
 
   addFixedExpense() {
     //console.log("add category")
-    this.mockapi.addFixedExpense(this.title, this.cost)
+    this.fixedexpense = this.data.fixedExpense
+    this.budgetService.addFixedExpense(this.data.id, {id: undefined, title: this.title, spent: this.cost}).subscribe({
+      next: (addedFixedExpesnse) => {
+        console.log('addFixedExpense:', addedFixedExpesnse);
+        this.fixedexpense.push(addedFixedExpesnse); // Update the local categories list with id from backend
+        this.budgetService.setFixedExpenseList(this.fixedexpense)
+      },
+      error: (error) => {
+        console.error('Error adding fixed Expense:', error);
+      }
+    });
+    //this.mockapi.addFixedExpense(this.title, this.cost)
     //allBudgetValue.category.push({id: allBudgetValue.category.length, title: this.title, total: parseFloat(this.totalAmount), spent: 0,  remaining:  parseFloat(this.totalAmount), transaction: []} );
     
   }

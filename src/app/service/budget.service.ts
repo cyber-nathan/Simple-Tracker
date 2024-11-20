@@ -1,5 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { AllBudget, BudgetInfo, Categories, CategoryList, fixedExpenseList, FixedExpenses, Transactions } from '../interface';
+import { AllBudget, BudgetInfo, Category, CategoryList, fixedExpenseList, FixedExpense, Transaction } from '../interface';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 
@@ -11,6 +11,10 @@ export class BudgetService {
 
   private baseUrl = 'http://localhost:8080/api/v1/budget'
   private budgetSource = new BehaviorSubject<BudgetInfo |null>(null)
+  private categorySource = new BehaviorSubject<Category[]>([])
+  private fixedExpenseSource = new BehaviorSubject<FixedExpense[]>([])
+  fixedExpense$ = this.fixedExpenseSource.asObservable()
+  category$ = this.categorySource.asObservable()
   budget$ = this.budgetSource.asObservable(); // Expose the budget data as an observable
 
    constructor(private http: HttpClient) { }
@@ -26,16 +30,31 @@ export class BudgetService {
     );
   }
 
-  getFixedExpense(budgetId: number): Observable<FixedExpenses[]> {
-    return this.http.get<FixedExpenses[]>(`${this.baseUrl}/${budgetId}/fixed_expense`)
+  getFixedExpense(budgetId: number): Observable<FixedExpense[]> {
+    return this.http.get<FixedExpense[]>(`${this.baseUrl}/${budgetId}/fixed_expense`)
   }
   
-  getCategoreis(budgetId: number): Observable<Categories[]> {
-    return this.http.get<Categories[]>(`${this.baseUrl}/${budgetId}/category`)
+  getCategoryList(budgetId: number): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.baseUrl}/${budgetId}/category`)
+    // .pipe(     
+    //    tap((categories) => {
+    //   console.log("serves", categories)
+    //   this.categorySource.next(categories);
+    // })
+ // );
   }
 
-  getTransactions(categoryId: number, budgetId: number ): Observable<Transactions[]> {
-    return this.http.get<Transactions[]>(`${this.baseUrl}/${budgetId}/category/${categoryId}/transaction`)
+
+  setCategoryList(data: Category[]) {
+    this.categorySource.next(data)
+  }
+
+  setFixedExpenseList(data: FixedExpense[]) {
+    this.fixedExpenseSource.next(data)
+  }
+
+  getTransactions(categoryId: number, budgetId: number ): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.baseUrl}/${budgetId}/category/${categoryId}/transaction`)
   }
 
   setBudgets(data: BudgetInfo){
@@ -57,8 +76,20 @@ export class BudgetService {
 
   }
 
-  addCategory(catData: Categories, budgetId: number) {
-    return this.http.post<Categories>(`${this.baseUrl}/${budgetId}/category`, catData)
+  addCategory(catData: Category, budgetId: number) {
+    return this.http.post<Category>(`${this.baseUrl}/${budgetId}/category`, catData)
+
+  }
+
+  addFixedExpense(budgetId: number, fixedExpenseData: FixedExpense) {
+    console.log("add fixed expense budget id: ", budgetId)
+    return this.http.post<FixedExpense>(`${this.baseUrl}/${budgetId}/fixed_expense`, fixedExpenseData)
+  }
+
+  deleteFixedExpense(FixedExpenseId: number, budgetId: number) {
+   // console.log("in serivce",  budgetId, FixedExpenseId)
+    //console.log(`${this.baseUrl}/${budgetId}/fixed_expense/${FixedExpenseId}`)
+    return this.http.delete(`${this.baseUrl}/${budgetId}/fixed_expense/${FixedExpenseId}`)
   }
 
   deleteCategory(catId: number, budgetId: number) {
@@ -67,11 +98,11 @@ export class BudgetService {
     return this.http.delete(`${this.baseUrl}/${budgetId}/category/${catId}`)
   }
 
-  // dummyDelete() {
-  //   console.log(";;dummyDelete")
-  //   console.log("dummy", this.baseUrl2)
-  //   return this.http.delete(`${this.baseUrl2}`,  {responseType: 'text'})
-  // }
+ editFixedExpense(budgetId: number, FixedId: number, title: string, spent: number) {
+
+
+
+ }
 
 
 

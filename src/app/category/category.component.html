@@ -6,7 +6,7 @@
       <br>
       <mat-card-content style="height: 15rem;">
         <p-toast></p-toast>
-        <p-table [value]="fixedexpense" dataKey="id" editMode="row" scrollHeight="250px"
+        <p-table [value]="(fixedExpenseBehave$ |async) || [] " dataKey="id" editMode="row" scrollHeight="250px"
           [tableStyle]="{'min-width': '25rem'}">
           <ng-template pTemplate="header">
             <tr>
@@ -65,7 +65,7 @@
     <mat-icon style="cursor: pointer;" (click)="openAddCatDialog()">add</mat-icon>
   </mat-card-header>
   <mat-card-content style="height: 27rem;"> 
-    <p-table [value]="categories" [tableStyle]="{ 'min-width': '25rem'}" [scrollable]="true" scrollHeight="300px">
+    <p-table [value]="(categoryBehave$ |async) || [] " [tableStyle]="{ 'min-width': '25rem'}" [scrollable]="true" scrollHeight="300px">
       <ng-template pTemplate="header">
         <tr>
           <th>Title </th>
@@ -82,6 +82,7 @@
           <td>{{category.total | currency: 'USD'}}</td>
           <td> -{{category.spent | currency: 'USD'}}</td>
           <td>{{category.remaining | currency: 'USD'}}</td>
+          <td>{{category.id }}</td>
           <td><button  pButton pRipple type="button"icon="pi pi-pencil"
           (click)="openEditCatDialog(category)" class="p-button-rounded p-button-text">
         </button>

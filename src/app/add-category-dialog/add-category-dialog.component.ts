@@ -12,7 +12,7 @@ import { MockApiService } from '../service/mock-api.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { BudgetService } from '../service/budget.service';
-import { Categories } from '../interface';
+import { Category } from '../interface';
 @Component({
 
   selector: 'app-add-category-dialog',
@@ -26,13 +26,13 @@ export class AddCategoryDialogComponent {
   title!: string
   totalAmount!: number
   budgetId = 0
-  categories: Categories[] = []
+  categories: Category[] = []
   constructor(private budgetService: BudgetService){}
   ngOnInit(): void {
     this.budgetService.budget$.subscribe((budgetInfo) => {
       if (budgetInfo) {
        this.budgetId = budgetInfo.id
-       this.budgetService.getCategoreis(budgetInfo.id).subscribe(catData => {
+       this.budgetService.getCategoryList(budgetInfo.id).subscribe(catData => {
         this.categories = catData
       })
       }
@@ -41,7 +41,7 @@ export class AddCategoryDialogComponent {
 
   addCategory() {
     if (this.budgetId && this.title && this.totalAmount) {
-      const newCategory: Categories = {
+      const newCategory: Category = {
         id: undefined, // Placeholder, backend will assign the real id
         title: this.title,
         total: this.totalAmount,
@@ -55,6 +55,7 @@ export class AddCategoryDialogComponent {
         next: (addedCategory) => {
           console.log('Category added:', addedCategory);
           this.categories.push(addedCategory); // Update the local categories list with id from backend
+          this.budgetService.setCategoryList(this.categories)
         },
         error: (error) => {
           console.error('Error adding category:', error);
