@@ -98,9 +98,8 @@ export class BudgetService {
     return this.http.delete(`${this.baseUrl}/${budgetId}/category/${catId}`)
   }
 
- editFixedExpense(budgetId: number, FixedId: number, title: string, spent: number) {
-
-
+ editFixedExpense(budgetId: number, fixedExpenseDetails: FixedExpense) {
+  return this.http.put<FixedExpense>(`${this.baseUrl}/${budgetId}/fixed_expense/${fixedExpenseDetails.id}`, fixedExpenseDetails)
 
  }
 

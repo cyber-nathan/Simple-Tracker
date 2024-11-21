@@ -34,16 +34,11 @@ import { forkJoin, switchMap } from 'rxjs';
   styleUrl: './category.component.css'
 })
 export class CategoryComponent {
-
-  // categoryValue!: CategoryList[]
-  // allbudget?: AllBudget;  // This is another variable you may want to initialize
-  fixedExpenseValue!: fixedExpenseList[]
-  clonedFixedExpense: { [s: string]: fixedExpenseList } = {};
+  clonedFixedExpense: { [s: string]: FixedExpense } = {};
   afterExpense?: number;
 
   readonly dialog = inject(MatDialog);
 
-  //private mockapi: MockApiService = inject (MockApiService)
   
   fixedexpense: FixedExpense[] = [];
   categories: Category[] = [];
@@ -89,28 +84,43 @@ ngOnInit(): void {
   }
 
 
-  onRowEditInit(fixedExpense: fixedExpenseList) {
-    this.clonedFixedExpense[fixedExpense.id ] = { ...fixedExpense };
-    console.log(this.clonedFixedExpense)
+  onRowEditInit(fixedExpense: FixedExpense) {
+    if(fixedExpense.id){
+
+      this.clonedFixedExpense[fixedExpense.id] = { ...fixedExpense };
+      console.log(this.clonedFixedExpense)
+    }
 }
 
-onRowEditSave(fixedExpense: fixedExpenseList) {
-    if (fixedExpense.spent > 0) {
+onRowEditSave(fixedExpense: FixedExpense) {
+    if (fixedExpense.spent > 0 && fixedExpense.id && this.budgetInfo) {
+      console.log("this is edit save", fixedExpense)
       console.log("clone", this.clonedFixedExpense[fixedExpense.id ].spent)
-    //  this.mockapi.updatingFixedExpense(fixedExpense.spent, this.clonedFixedExpense[fixedExpense.id ].spent)
+      this.budgetService.editFixedExpense(this.budgetInfo.id, fixedExpense).subscribe({
+        next: (editFixedExpesnse) => {
+          const indexToReplace = this.fixedexpense.findIndex(fixedexp => fixedexp.id === fixedExpense.id);
+          this.fixedexpense.splice(indexToReplace, 1, editFixedExpesnse); // Update the local categories list with id from backend
+          this.budgetService.setFixedExpenseList(this.fixedexpense)
+        },
+        error: (error) => {
+          console.error('Error adding fixed Expense:', error);
+        }
+      });
+   
         delete this.clonedFixedExpense[fixedExpense.id ];
-        console.log(fixedExpense)
-        
-        //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
+      
     } else {
       //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });
     }
 }
 
-onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
-    this.fixedExpenseValue[index] = this.clonedFixedExpense[fixedExpense.id ];
+onRowEditCancel(fixedExpense: FixedExpense, index: number) {
+  if(fixedExpense.id) {
+
+    this.fixedexpense[index] = this.clonedFixedExpense[fixedExpense.id ];
     delete this.clonedFixedExpense[fixedExpense.id ];
     console.log(this.clonedFixedExpense)
+  }
 }
 
 
@@ -166,7 +176,6 @@ onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
   }
   
   deleteFixedExpense(fixedId: number) {
-   // this.mockapi.deleteFixedExpense(fixedId)
    if(this.budgetInfo) {
     this.budgetService.deleteFixedExpense(fixedId, this.budgetInfo.id).subscribe({
       next: (val) => {
@@ -184,12 +193,4 @@ onRowEditCancel(fixedExpense: fixedExpenseList, index: number) {
 
   }
   
-
-  categoryContent: {id: number, title: string, total: number, spent: number, remaining: number,}[] = [
-
-    {id: 1, title: 'Food', total: 300, spent: 100, remaining: 20.00},
-    {id: 2, title: 'Transportation', total: 500, spent: 250,  remaining: 22.00},
-    {id: 3, title: 'Bills', total: 1000, spent: 500,  remaining: 21.00},
-    {id: 4, title: 'Rent', total: 1500, spent: 1000,  remaining: 23.00},
-  ];
 }
