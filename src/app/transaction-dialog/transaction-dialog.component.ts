@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import {MatButtonModule} from '@angular/material/button';
@@ -7,13 +7,14 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { allBudgetValue } from '../db.data';
-import { AllBudget, CategoryList } from '../interface';
+import { AllBudget, BudgetInfo, Category, CategoryList, Transaction } from '../interface';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Import CommonModule for ngFor
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MockApiService } from '../service/mock-api.service';
+import { BudgetService } from '../service/budget.service';
 @Component({
   selector: 'app-transaction-dialog',
   standalone: true,
@@ -23,34 +24,48 @@ import { MockApiService } from '../service/mock-api.service';
 })
 export class TransactionDialogComponent {
   private mockapi: MockApiService = inject (MockApiService)
-  categoryValue?: CategoryList[]  = allBudgetValue.category;  // This contains the data from the DB (mock data)
+  readonly dialogRef = inject(MatDialogRef<TransactionDialogComponent>);
+  readonly data = inject(MAT_DIALOG_DATA);
+  categories: Category[] = this.data.category
+  budgetInfo: BudgetInfo | null = null 
   selectedCategory: any; // holds selected category
   allbudget?: AllBudget;  // This is another variable you may want to initialize
+
 
   
   date: string = ""
   description: string = ""
   spent!: number;
 
-  constructor() {
-    this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
-      this.categoryValue = value.category
-    });
-  }
+  constructor(private budgetService: BudgetService){}
   
   addTransaction(categoryTitle: string) {
-    this.mockapi.addTransaction(categoryTitle, this.date, this.description, this.spent)
+   // console.log("this is category for adding transaction", this.data.id)
+    const category = this.categories?.find(cat => cat.title === categoryTitle)
+    const newTransaction: Transaction = {
+      id: undefined,
+      date: this.date,
+      description: this.description,
+      spent: this.spent,
+      transactionCategory: categoryTitle
+    }
+    if (category?.id) {
+      console.log("this is category for adding transaction", this.data.id)
+      this.budgetService.addTransaction(this.data.id, category.id, newTransaction ).subscribe({
+        next: (addedTransaction) => {
+          console.log("this is new added Transaction", addedTransaction )
+          category?.transactions.push(newTransaction) 
+          this.categories.map(cat => cat.id === category.id ? { ...cat, Transactions: category?.transactions } : cat);
+          this.budgetService.setCategoryList(this.categories)
+        },
+        error: (error) => {
+          console.error('Error adding Transaction:', error);
+        }
+      });
+    }
 
-  //  const category = this.categoryValue?.find(cat => cat.title === categoryTitle) // find category based on title
-  //   if(category) { 
-  //     category?.transaction.push({id: category?.transaction.length, date: this.date, description: this.description, spent: this.spent, transactionCategory: this.selectedCategory}) // push the new transaction to its respected cateogry array
-  //     category.remaining = category.remaining - this.spent
-  //     category.spent = +category.spent + +this.spent
-  //     console.log(category.spent+1)
-  //     allBudgetValue.totalSpent = allBudgetValue.totalSpent - this.spent
-  //     allBudgetValue.totalBalance = allBudgetValue.totalBalance - this.spent
 
-  //   }
+
   }
 
 

@@ -38,6 +38,7 @@ export class TransactionHistoryComponent {
   // }
 
   categories: Category[] = []
+  categoryBehave$ = this.budgetService.category$;
   budgetInfo: BudgetInfo | null = null 
 
   constructor(private budgetService: BudgetService){}
@@ -45,8 +46,10 @@ export class TransactionHistoryComponent {
   ngOnInit(): void {
     this.budgetService.budget$.subscribe((budgetInfo) => {
       if (budgetInfo) {
+        this.budgetInfo = budgetInfo
         this.budgetService.getCategoryList(budgetInfo.id).subscribe(catData => {
           this.categories = catData
+          this.budgetService.setCategoryList(catData)
           console.log("this is categories in transaction ", this.categories[0].transactions)
         })
 
@@ -55,21 +58,28 @@ export class TransactionHistoryComponent {
   }
 
     // Retrieve transactions based on the selected category
-  get transactionValue()  {
+    // future task implement this in a more simple way
+    get transactionValue() {
       if (this.selectedCategory) {
         return this.selectedCategory.transactions; // Display transactions for the selected category
       }
-      // display all transaction when no category is selected
-      const allTransactions = this.categories.reduce((allTransactions: Transaction[], category: Category) => { // reduce method processes each element in array (CategoryList in this.categoryValue)
-        return allTransactions.concat(category.transactions);
-      }, []); // learn more
-
+      
+      // Display all transactions when no category is selected
+      // Check if categoryBehave$ is emitting the latest categories
+      let allTransactions: Transaction[] = [];
+      
+      this.categoryBehave$.subscribe((categories) => {
+        allTransactions = categories.reduce((acc: Transaction[], category: Category) => {
+          return acc.concat(category.transactions);
+        }, []);
+    
         // Sort transactions by date in descending order (most recent first)
-    return allTransactions.sort((a, b) => {
-    // Convert date strings to Date objects for comparison
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
- // displays most recent tranaction first
+        allTransactions = allTransactions.sort((a, b) => { // when adding transaciton it does not add in right order with most recent transaction at top
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+      });
+    
+      return allTransactions;
     }
 
     deleteTransaction(transiId: number, catTitle: string, spent: number) {
@@ -82,7 +92,10 @@ export class TransactionHistoryComponent {
   readonly dialog = inject(MatDialog);
 
   openDialog() {
-    const dialogRef = this.dialog.open(TransactionDialogComponent);
+    const dialogRef = this.dialog.open(TransactionDialogComponent, {
+      data: { id: this.budgetInfo?.id, category: this.categories  }
+    });
+
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
