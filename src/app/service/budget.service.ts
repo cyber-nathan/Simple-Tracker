@@ -106,6 +106,10 @@ export class BudgetService {
  addTransaction(budgetId: number, catId: number, tranaction: Transaction) {
   return this.http.post<Transaction>(`${this.baseUrl}/${budgetId}/category/${catId}`, tranaction)
  }
+ 
+ deleteTransaction(budgetId:number, catId: number, transactionId: number) {
+  return this.http.delete(`${this.baseUrl}/${budgetId}/category/${catId}/transaction/${transactionId}`)
+ }
 
 
 

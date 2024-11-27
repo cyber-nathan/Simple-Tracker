@@ -83,7 +83,26 @@ export class TransactionHistoryComponent {
     }
 
     deleteTransaction(transiId: number, catTitle: string, spent: number) {
-     // this.mockapi.deleteTransaction( transiId, catTitle, spent )
+      const category = this.categories?.find(cat => cat.title === catTitle);
+      if (this.budgetInfo && category?.id) {
+        this.budgetService.deleteTransaction(this.budgetInfo?.id, category?.id, transiId).subscribe({
+          next: (removedTransaction) => {
+            // Update the transactions array by filtering out the deleted transaction
+            category.transactions = category.transactions.filter(transaction => transaction.id !== transiId);
+    
+            // Update the categories list with the modified category
+            this.categories = this.categories.map(cat => 
+              cat.id === category.id ? { ...cat, transactions: category.transactions } : cat
+            );
+    
+            // Update the category list in the service
+            this.budgetService.setCategoryList(this.categories);
+          },
+          error: (error) => {
+            console.error('Error deleting transaction:', error);
+          }
+        });
+      }
 
 
 
