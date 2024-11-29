@@ -103,6 +103,11 @@ export class BudgetService {
 
  }
 
+ editCategory(budgetId: number, categoryDetails: Category) {
+  return this.http.put<Category>(`${this.baseUrl}/${budgetId}/category/${categoryDetails.id}`, categoryDetails)
+
+ }
+
  addTransaction(budgetId: number, catId: number, tranaction: Transaction) {
   return this.http.post<Transaction>(`${this.baseUrl}/${budgetId}/category/${catId}`, tranaction)
  }

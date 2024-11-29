@@ -35,6 +35,7 @@ import { forkJoin, switchMap } from 'rxjs';
 })
 export class CategoryComponent {
   clonedFixedExpense: { [s: string]: FixedExpense } = {};
+  clonedCategory: { [s: string]: Category } = {}
   //afterExpense?: number;
 
   readonly dialog = inject(MatDialog);
@@ -128,6 +129,49 @@ onRowEditCancel(fixedExpense: FixedExpense, index: number) {
   }
 }
 
+
+catOnRowEditInit(category: Category) {
+  if(category.id){
+
+    this.clonedCategory[category.id] = { ...category };
+    console.log(this.clonedCategory)
+  }
+}
+
+catOnRowEditSave(category: Category) {
+const budgetInfo= this.budgetInfo
+  if (category.total > 0 && category.id && budgetInfo) {
+    console.log("this is edit save", category)
+    //console.log("clone", this.clonedCategory[category.id ].spent)
+    //const pastTotal = this.clonedFixedExpense[category.id ].spent
+
+    this.budgetService.editCategory(budgetInfo.id, category).subscribe({
+      next: (editCategory ) => {
+        console.log("in subscribe of edit cat")
+        const indexToReplace = this.categories.findIndex(categoryVal => categoryVal.id === category.id);
+        this.categories.splice(indexToReplace, 1, editCategory); // Update the local categories list with id from backend
+        this.budgetService.setCategoryList(this.categories)
+      },
+      error: (error) => {
+        console.error('Error adding fixed Expense:', error);
+      }
+    });
+ 
+      delete this.clonedCategory[category.id ];
+    
+  } else {
+    //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });
+  }
+}
+
+catOnRowEditCancel(category: Category, index: number) {
+if(category.id) {
+
+  this.categories[index] = this.clonedCategory[category.id ];
+  delete this.clonedCategory[category.id ];
+  console.log(this.clonedCategory)
+}
+}
 
 
   openAddCatDialog() {
