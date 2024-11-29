@@ -49,14 +49,14 @@
                     (click)="onRowEditCancel(fixedExpense, ri)" class="p-button-rounded p-button-text p-button-danger">
                   </button>
                   <button   *ngIf="editing" pButton pRipple type="button" pDeleteEditableRow  icon="pi pi-trash"
-                (click)="deleteFixedExpense(fixedExpense.id)" class="p-button-rounded p-button-text">
+                (click)="deleteFixedExpense(fixedExpense.id, fixedExpense.spent)" class="p-button-rounded p-button-text">
               </button>
                 </div>
               </td>
             </tr>
           </ng-template>
         </p-table>
-        <p style="padding-top: 15px; font-size: large;"><b>After Expense:</b> {{afterExpense | currency: 'USD'}}</p>
+        <p style="padding-top: 15px; font-size: large;"><b>After Expense:</b> {{(budgetBehave$ | async)?.afterExpense | currency: 'USD'}}</p>
       </mat-card-content>
 <br>
     

@@ -26,6 +26,7 @@ export class AddFixedExpenseComponent {
   readonly dialogRef = inject(MatDialogRef<AddFixedExpenseComponent>);
   readonly data = inject(MAT_DIALOG_DATA);
   fixedexpense: FixedExpense[] = [];
+  //budgetInfo: BudgetInfo | null = null; 
   constructor(private budgetService: BudgetService){}
 
 
@@ -37,16 +38,22 @@ export class AddFixedExpenseComponent {
   addFixedExpense() {
     //console.log("add category")
     this.fixedexpense = this.data.fixedExpense
-    this.budgetService.addFixedExpense(this.data.id, {id: undefined, title: this.title, spent: this.cost}).subscribe({
-      next: (addedFixedExpesnse) => {
-        console.log('addFixedExpense:', addedFixedExpesnse);
-        this.fixedexpense.push(addedFixedExpesnse); // Update the local categories list with id from backend
-        this.budgetService.setFixedExpenseList(this.fixedexpense)
-      },
-      error: (error) => {
-        console.error('Error adding fixed Expense:', error);
-      }
-    });
+    const budgetInfo = this.data.budgetInfo; // Use a local constant
+    if (budgetInfo) {
+      this.budgetService.addFixedExpense(this.data.budgetInfo.id, {id: undefined, title: this.title, spent: this.cost}).subscribe({
+        next: (addedFixedExpesnse) => {
+          console.log('addFixedExpense:', addedFixedExpesnse);
+          budgetInfo.afterExpense = budgetInfo.afterExpense - this.cost
+          const updateBudgetInfo: BudgetInfo = {...budgetInfo, afterExpense: budgetInfo.afterExpense}
+          this.budgetService.setBudgets(updateBudgetInfo)
+          this.fixedexpense.push(addedFixedExpesnse); // Update the local categories list with id from backend
+          this.budgetService.setFixedExpenseList(this.fixedexpense)
+        },
+        error: (error) => {
+          console.error('Error adding fixed Expense:', error);
+        }
+      });
+    }
     //this.mockapi.addFixedExpense(this.title, this.cost)
     //allBudgetValue.category.push({id: allBudgetValue.category.length, title: this.title, total: parseFloat(this.totalAmount), spent: 0,  remaining:  parseFloat(this.totalAmount), transaction: []} );
     

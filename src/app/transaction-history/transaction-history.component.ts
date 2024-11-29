@@ -88,12 +88,21 @@ export class TransactionHistoryComponent {
         this.budgetService.deleteTransaction(this.budgetInfo?.id, category?.id, transiId).subscribe({
           next: (removedTransaction) => {
             // Update the transactions array by filtering out the deleted transaction
+            category.spent = category.spent - spent
+            category.remaining = category.remaining + spent
             category.transactions = category.transactions.filter(transaction => transaction.id !== transiId);
     
-            // Update the categories list with the modified category
-            this.categories = this.categories.map(cat => 
-              cat.id === category.id ? { ...cat, transactions: category.transactions } : cat
-            );
+        // Update the categories list with the modified category
+        this.categories = this.categories.map(cat => 
+          cat.id === category.id
+            ? {
+                ...cat,
+                transactions: category.transactions, // Use the updated transactions array
+                spent: category.spent,
+                remaining: category.remaining,
+              }
+            : cat
+        );
     
             // Update the category list in the service
             this.budgetService.setCategoryList(this.categories);
@@ -111,14 +120,20 @@ export class TransactionHistoryComponent {
   readonly dialog = inject(MatDialog);
 
   openDialog() {
-    const dialogRef = this.dialog.open(TransactionDialogComponent, {
-      data: { id: this.budgetInfo?.id, category: this.categories  }
-    });
+    if(this.budgetInfo) {
+       this.budgetService.getCategoryList(this.budgetInfo.id).subscribe(data => {
+        const cat = data;
+        const dialogRef = this.dialog.open(TransactionDialogComponent, {
+          data: { id: this.budgetInfo?.id, category: cat }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(`Dialog result: ${result}`);
+        });
+      })
+
+    }
 
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
   }
 
 

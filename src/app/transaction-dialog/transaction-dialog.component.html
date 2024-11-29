@@ -20,7 +20,7 @@
     </p-floatLabel>
 
     <p-floatLabel>
-      <p-dropdown [options]="categories" [(ngModel)]="selectedCategory" [checkmark]="true" optionLabel="title" [style]="{ width: '25rem' }"
+      <p-dropdown [options]="(categoryBehave$ |async) || [] " [(ngModel)]="selectedCategory" [checkmark]="true" optionLabel="title" [style]="{ width: '25rem' }"
         [showClear]="true" placeholder="Select a Category">
       </p-dropdown>
       <label for="category">Select Category</label>

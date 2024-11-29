@@ -35,7 +35,7 @@ import { forkJoin, switchMap } from 'rxjs';
 })
 export class CategoryComponent {
   clonedFixedExpense: { [s: string]: FixedExpense } = {};
-  afterExpense?: number;
+  //afterExpense?: number;
 
   readonly dialog = inject(MatDialog);
 
@@ -44,6 +44,7 @@ export class CategoryComponent {
   categories: Category[] = [];
   fixedExpenseBehave$ = this.budgetService.fixedExpense$
   categoryBehave$ = this.budgetService.category$;
+  budgetBehave$ = this.budgetService.budget$
   budgetInfo: BudgetInfo | null = null; 
 
   constructor(private budgetService: BudgetService){}
@@ -54,7 +55,6 @@ ngOnInit(): void {
       .pipe(
         switchMap((budgetInfo) => {
           this.budgetInfo = budgetInfo;
-          this.afterExpense = budgetInfo?.afterExpense;
 
           if (budgetInfo) {
             // Use forkJoin to combine fixed expenses and categories calls
@@ -93,11 +93,16 @@ ngOnInit(): void {
 }
 
 onRowEditSave(fixedExpense: FixedExpense) {
-    if (fixedExpense.spent > 0 && fixedExpense.id && this.budgetInfo) {
+  const budgetInfo= this.budgetInfo
+    if (fixedExpense.spent > 0 && fixedExpense.id && budgetInfo) {
       console.log("this is edit save", fixedExpense)
       console.log("clone", this.clonedFixedExpense[fixedExpense.id ].spent)
-      this.budgetService.editFixedExpense(this.budgetInfo.id, fixedExpense).subscribe({
+      const pastSpent = this.clonedFixedExpense[fixedExpense.id ].spent
+      this.budgetService.editFixedExpense(budgetInfo.id, fixedExpense).subscribe({
         next: (editFixedExpesnse) => {
+          budgetInfo.afterExpense = budgetInfo.afterExpense + (pastSpent - fixedExpense.spent )
+          const updateBudgetInfo: BudgetInfo = {...budgetInfo, afterExpense: budgetInfo.afterExpense}
+          this.budgetService.setBudgets(updateBudgetInfo)
           const indexToReplace = this.fixedexpense.findIndex(fixedexp => fixedexp.id === fixedExpense.id);
           this.fixedexpense.splice(indexToReplace, 1, editFixedExpesnse); // Update the local categories list with id from backend
           this.budgetService.setFixedExpenseList(this.fixedexpense)
@@ -146,7 +151,7 @@ onRowEditCancel(fixedExpense: FixedExpense, index: number) {
 
   openAddFixedExpenseDialog() {
     const dialogRef = this.dialog.open(AddFixedExpenseComponent, {
-      data: { id: this.budgetInfo?.id, fixedExpense: this.fixedexpense  }
+      data: { budgetInfo: this.budgetInfo, fixedExpense: this.fixedexpense  }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -175,10 +180,14 @@ onRowEditCancel(fixedExpense: FixedExpense, index: number) {
 
   }
   
-  deleteFixedExpense(fixedId: number) {
-   if(this.budgetInfo) {
-    this.budgetService.deleteFixedExpense(fixedId, this.budgetInfo.id).subscribe({
+  deleteFixedExpense(fixedId: number, spent: number) {
+    const budgetInfo = this.budgetInfo; 
+   if(budgetInfo) {
+    this.budgetService.deleteFixedExpense(fixedId, budgetInfo.id).subscribe({
       next: (val) => {
+        budgetInfo.afterExpense = budgetInfo.afterExpense + spent
+        const updateBudgetInfo: BudgetInfo = {...budgetInfo, afterExpense: budgetInfo.afterExpense}
+        this.budgetService.setBudgets(updateBudgetInfo)
         this.fixedexpense = this.fixedexpense.filter(fixedExpense => fixedExpense.id !== fixedId)
         console.log("this is removed categories", this.fixedexpense)
         this.budgetService.setFixedExpenseList(this.fixedexpense)

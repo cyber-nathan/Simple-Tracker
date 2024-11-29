@@ -32,16 +32,20 @@ export class TransactionDialogComponent {
   allbudget?: AllBudget;  // This is another variable you may want to initialize
 
 
+
   
   date: string = ""
   description: string = ""
   spent!: number;
 
+  categoryBehave$ = this.budgetService.category$;
+
   constructor(private budgetService: BudgetService){}
   
   addTransaction(categoryTitle: string) {
-   // console.log("this is category for adding transaction", this.data.id)
+    console.log("this is category for adding transaction", this.categories)
     const category = this.categories?.find(cat => cat.title === categoryTitle)
+    console.log("this is category for adding transaction", category)
     const newTransaction: Transaction = {
       id: undefined,
       date: this.date,
@@ -55,7 +59,9 @@ export class TransactionDialogComponent {
         next: (addedTransaction) => {
           console.log("this is new added Transaction", addedTransaction )
           category?.transactions.push(newTransaction) 
-          this.categories.map(cat => cat.id === category.id ? { ...cat, Transactions: category?.transactions } : cat);
+          category.spent = newTransaction.spent
+          category.remaining = category.remaining - newTransaction.spent
+          this.categories.map(cat => cat.id === category.id ? { ...cat, Transactions: [category?.transactions], spent:  category.spent, remaining: category.remaining } : cat);
           this.budgetService.setCategoryList(this.categories)
         },
         error: (error) => {

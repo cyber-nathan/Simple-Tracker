@@ -29,6 +29,8 @@ export class EditCategoryComponent {
   editTitle: string = this.data.title
   editTotal: number = this.data.total 
   private mockapi: MockApiService = inject (MockApiService)
+
+  
   
   constructor() {
     this.mockapi.getBudgetData().subscribe((value: AllBudget) => { // what is subscribe
@@ -41,6 +43,7 @@ export class EditCategoryComponent {
 
   edit() { 
    // this.mockapi.editCat(this.data.id, this.editTitle, this.editTotal)
+
 
   }
 
