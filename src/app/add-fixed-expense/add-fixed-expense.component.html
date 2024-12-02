@@ -20,7 +20,7 @@
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="addFixedExpense()">Add</button>
+  <button mat-button [mat-dialog-close]="true" [disabled]="enableSave()" cdkFocusInitial (click)="addFixedExpense()">Add</button>
 </mat-dialog-actions>
 
 

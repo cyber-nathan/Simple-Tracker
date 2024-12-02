@@ -56,7 +56,7 @@
             </tr>
           </ng-template>
         </p-table>
-        <p style="padding-top: 15px; font-size: large;"><b>After Expense:</b> {{(budgetBehave$ | async)?.afterExpense | currency: 'USD'}}</p>
+        <!-- <p style="padding-top: 15px; font-size: large;"><b>After Expense:</b> {{(budgetBehave$ | async)?.afterExpense | currency: 'USD'}}</p> -->
       </mat-card-content>
 <br>
 
@@ -102,16 +102,13 @@
               </p-cellEditor>
             </td>
             <td> -{{category.spent | currency: 'USD'}}</td>
-            <td >
-              <p-cellEditor>
-                <ng-template pTemplate="input">
-                  <p-inputNumber inputId="remaining" [(ngModel)]="category.remaining" [min]="0"  mode="decimal" [minFractionDigits]="1"  [maxFractionDigits]="2"/>
-                </ng-template>
-                <ng-template pTemplate="output">
-                  {{category.remaining | currency: 'USD'}}
-                </ng-template>
-              </p-cellEditor>
-            </td>
+            @if (category.remaining > 0) {
+
+              <td>{{category.remaining | currency: 'USD'}}</td>
+            }
+            @else {
+              <td [ngStyle]="{ color: 'red' }">{{category.remaining | currency: 'USD'}}</td>
+            }
             <td style="max-width: 100px;">
               <div class="flex align-items-center justify-content-center gap-2">
                 <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"

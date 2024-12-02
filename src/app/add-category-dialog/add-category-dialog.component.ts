@@ -39,6 +39,13 @@ export class AddCategoryDialogComponent {
     })
   }
 
+  enableSave(): boolean {
+    if (this.totalAmount && this.title) {
+      return false
+    }
+    return true
+  }
+
   addCategory() {
     if (this.budgetId && this.title && this.totalAmount) {
       const newCategory: Category = {

@@ -42,6 +42,13 @@ export class TransactionDialogComponent {
 
   constructor(private budgetService: BudgetService){}
   
+  enableSave(): boolean {
+    if(this.date && this.description && this.spent) {
+
+      return false
+    }
+    return true
+  }
   addTransaction(categoryTitle: string) {
     console.log("this is category for adding transaction", this.categories)
     const category = this.categories?.find(cat => cat.title === categoryTitle)
@@ -58,9 +65,9 @@ export class TransactionDialogComponent {
       this.budgetService.addTransaction(this.data.id, category.id, newTransaction ).subscribe({
         next: (addedTransaction) => {
           console.log("this is new added Transaction", addedTransaction )
-          category?.transactions.push(newTransaction) 
-          category.spent = newTransaction.spent
-          category.remaining = category.remaining - newTransaction.spent
+          category?.transactions.push(addedTransaction) 
+          category.spent = addedTransaction.spent
+          category.remaining = category.remaining - addedTransaction.spent
           this.categories.map(cat => cat.id === category.id ? { ...cat, Transactions: [category?.transactions], spent:  category.spent, remaining: category.remaining } : cat);
           this.budgetService.setCategoryList(this.categories)
         },

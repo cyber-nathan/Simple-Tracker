@@ -34,6 +34,12 @@ export class AddFixedExpenseComponent {
   title!: string
   cost!: number
 
+  enableSave(): boolean {
+    if(this.title && this.cost) {
+      return false
+    }
+    return true
+  }
 
   addFixedExpense() {
     //console.log("add category")

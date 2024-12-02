@@ -83,36 +83,43 @@ export class TransactionHistoryComponent {
     }
 
     deleteTransaction(transiId: number, catTitle: string, spent: number) {
-      const category = this.categories?.find(cat => cat.title === catTitle);
-      if (this.budgetInfo && category?.id) {
-        this.budgetService.deleteTransaction(this.budgetInfo?.id, category?.id, transiId).subscribe({
-          next: (removedTransaction) => {
-            // Update the transactions array by filtering out the deleted transaction
-            category.spent = category.spent - spent
-            category.remaining = category.remaining + spent
-            category.transactions = category.transactions.filter(transaction => transaction.id !== transiId);
-    
-        // Update the categories list with the modified category
-        this.categories = this.categories.map(cat => 
-          cat.id === category.id
-            ? {
-                ...cat,
-                transactions: category.transactions, // Use the updated transactions array
-                spent: category.spent,
-                remaining: category.remaining,
+      if(this.budgetInfo) {
+        this.budgetService.getCategoryList(this.budgetInfo.id).subscribe(data => { 
+          const category = data.find(cat => cat.title === catTitle);
+          if (this.budgetInfo && category?.id) {
+            this.budgetService.deleteTransaction(this.budgetInfo?.id, category?.id, transiId).subscribe({
+              next: (removedTransaction) => {
+                // Update the transactions array by filtering out the deleted transaction
+                console.log("delete transaction", spent, category.spent, category.remaining)
+                category.spent = category.spent - spent
+                category.remaining = category.remaining + spent
+                category.transactions = category.transactions.filter(transaction => transaction.id !== transiId);
+        
+            // Update the categories list with the modified category
+            data = data.map(cat => 
+              cat.id === category.id
+                ? {
+                    ...cat,
+                    transactions: category.transactions, // Use the updated transactions array
+                    spent: category.spent,
+                    remaining: category.remaining,
+                  }
+                : cat
+            );
+        
+                // Update the category list in the service
+                this.budgetService.setCategoryList(data);
+              },
+              error: (error) => {
+                console.error('Error deleting transaction:', error);
               }
-            : cat
-        );
-    
-            // Update the category list in the service
-            this.budgetService.setCategoryList(this.categories);
-          },
-          error: (error) => {
-            console.error('Error deleting transaction:', error);
+            });
           }
-        });
-      }
-
+    
+       })
+ 
+     }
+     
 
 
     }
@@ -121,7 +128,7 @@ export class TransactionHistoryComponent {
 
   openDialog() {
     if(this.budgetInfo) {
-       this.budgetService.getCategoryList(this.budgetInfo.id).subscribe(data => {
+       this.budgetService.getCategoryList(this.budgetInfo.id).subscribe(data => { 
         const cat = data;
         const dialogRef = this.dialog.open(TransactionDialogComponent, {
           data: { id: this.budgetInfo?.id, category: cat }
