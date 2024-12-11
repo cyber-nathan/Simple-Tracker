@@ -1,5 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { AllBudget, BudgetInfo, Category, CategoryList, fixedExpenseList, FixedExpense, Transaction } from '../interface';
+import { AllBudget, BudgetInfo, Category, CategoryList, fixedExpenseList, FixedExpense, Transaction, Saving } from '../interface';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 
@@ -13,6 +13,8 @@ export class BudgetService {
   private budgetSource = new BehaviorSubject<BudgetInfo |null>(null)
   private categorySource = new BehaviorSubject<Category[]>([])
   private fixedExpenseSource = new BehaviorSubject<FixedExpense[]>([])
+  private savingSource = new BehaviorSubject<Saving[]>([])
+  saving$ = this.savingSource.asObservable()
   fixedExpense$ = this.fixedExpenseSource.asObservable()
   category$ = this.categorySource.asObservable()
   budget$ = this.budgetSource.asObservable(); // Expose the budget data as an observable
@@ -33,6 +35,10 @@ export class BudgetService {
   getFixedExpense(budgetId: number): Observable<FixedExpense[]> {
     return this.http.get<FixedExpense[]>(`${this.baseUrl}/${budgetId}/fixed_expense`)
   }
+
+  getSaving(budgetId: number): Observable<Saving[]> {
+    return this.http.get<Saving[]>(`${this.baseUrl}/${budgetId}/saving`)
+  }
   
   getCategoryList(budgetId: number): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/${budgetId}/category`)
@@ -51,6 +57,10 @@ export class BudgetService {
 
   setFixedExpenseList(data: FixedExpense[]) {
     this.fixedExpenseSource.next(data)
+  }
+
+  setSavingList(data: Saving[]) {
+    this.savingSource.next(data)
   }
 
   getTransactions(categoryId: number, budgetId: number ): Observable<Transaction[]> {
@@ -86,11 +96,19 @@ export class BudgetService {
     return this.http.post<FixedExpense>(`${this.baseUrl}/${budgetId}/fixed_expense`, fixedExpenseData)
   }
 
+  addSaving(budgetId: number, savingData: Saving) {
+    return this.http.post<Saving>(`${this.baseUrl}/${budgetId}/saving`, savingData)
+  }
+
   deleteFixedExpense(FixedExpenseId: number, budgetId: number) {
    // console.log("in serivce",  budgetId, FixedExpenseId)
     //console.log(`${this.baseUrl}/${budgetId}/fixed_expense/${FixedExpenseId}`)
     return this.http.delete(`${this.baseUrl}/${budgetId}/fixed_expense/${FixedExpenseId}`)
   }
+
+  deleteSaving(savingId: number, budgetId: number) {
+     return this.http.delete(`${this.baseUrl}/${budgetId}/saving/${savingId}`)
+   }
 
   deleteCategory(catId: number, budgetId: number) {
     console.log("in serivce",  budgetId, catId)
@@ -106,6 +124,10 @@ export class BudgetService {
  editCategory(budgetId: number, categoryDetails: Category) {
   return this.http.put<Category>(`${this.baseUrl}/${budgetId}/category/${categoryDetails.id}`, categoryDetails)
 
+ }
+
+ editSaveing(budgetId: number, savingDetails: Saving) {
+  return this.http.put<Saving>(`${this.baseUrl}/${budgetId}/saving/${savingDetails.id}`, savingDetails)
  }
 
  addTransaction(budgetId: number, catId: number, tranaction: Transaction) {

@@ -28,6 +28,13 @@ export interface FixedExpense {
     spent: number;
 }
 
+export interface Saving {
+    id?: number;
+    title: string;
+    amount: number;
+    saved?: number;
+}
+
 export interface Category {
     id?: number;
     title: string;

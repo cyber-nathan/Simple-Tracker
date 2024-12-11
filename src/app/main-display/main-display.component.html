@@ -1,127 +1,72 @@
-<div class="grid" style="width: 100%;" >
+<div class="grid nested-grid" style="width: 100%; ">
     @if(budgetBehave$ | async; as budget) {
-
-  <!-- First Row: Cards Section -->
-    <div class="col">
-        <div class="pl-3 pt-3 h-8rem p-d-flex p-ai-center p-jc-center p-m-2 p-shadow-2 border-round">
-            <mat-card appearance="outlined" class="shadow-4"style="height: 6rem; width: 100%; display: flex; justify-content: center; align-items: center;">
-                <mat-card-header style="padding-bottom: 1rem;">
-                    <mat-card-title>Total Balance</mat-card-title>
-                  </mat-card-header>
-                <mat-card-content style="font-size: 25px; " >
-                        {{budget.totalBalance  | currency: 'USD'}} 
-
-                </mat-card-content>
-            </mat-card>
+  
+      <!-- First Column: Category Section -->
+      <div class="col-4" style="height: calc(100vh - 60px)">
+        <div class="text-center p-3 border-round-sm h-full  font-bold">
+          <app-category></app-category>
         </div>
-    </div>
-    <!-- <div class="col">
-        <div class=" pt-3 h-8rem p-d-flex p-ai-center p-jc-center p-m-2 p-shadow-2 border-round">
-            <mat-card appearance="outlined" class="shadow-4" style="height: 6rem; width: 100%; display: flex; justify-content: center; align-items: center;">
-                <mat-card-header style="padding-bottom: 1rem;">
-                    <mat-card-title>After Expense </mat-card-title>
-                  </mat-card-header>
-                <mat-card-content style="font-size: 25px;"> {{overallMoney.afterExpense | currency: 'USD'}}</mat-card-content>
-            </mat-card>
-        </div>
-    </div> -->
-    <div class="col">
-        <div class=" pt-3 h-8rem p-d-flex p-ai-center p-jc-center p-m-2 p-shadow-2 border-round">
-            <mat-card appearance="outlined" class="shadow-4" style="height: 6rem; width: 100%; display: flex; justify-content: center; align-items: center;">
-                <mat-card-header style="padding-bottom: 1rem;">
-                    <mat-card-title>Salary ({{budget.payPeriod}})</mat-card-title>
-                  </mat-card-header>
-                <mat-card-content style="font-size: 25px;"> {{budget.salary | currency: 'USD'}} </mat-card-content>
-            </mat-card>
-            
-        </div>
-    </div>
-    <div class="col">
-        <div class=" pt-3  border-round">
-            <mat-card appearance="outlined" class="shadow-4" style="height: 6rem; width: 100%; display: flex; justify-content: center; align-items: center;">
-                <mat-card-header style="padding-bottom: 1rem;">
-                    <mat-card-title>After Expense</mat-card-title>
-                  </mat-card-header>
-                <mat-card-content style="font-size: 25px;"> {{budget.afterExpense | currency: 'USD'}} </mat-card-content>
-            </mat-card>
-        </div>
-    </div>
-}
-@else {
-    loading...
-    
-}  
-</div>
-
-<!-- Second Row: Category and Transaction Section -->
-<div class="grid" style="width: 100%; ">
-    <div class="col-4 md-4">
-        <div class=" h-full pl-3">
-            <app-category></app-category>
-        </div>
-    </div>
-    <div class="p-0 col md-8">
-        <div class=" h-full p-2">
-            <app-transaction-history></app-transaction-history>
-        </div>
-    </div>
-
-</div>
-
-
-
-<!-- <mat-grid-list cols="3" rowHeight="fit" style="height: 90vh; ">
-    <mat-grid-tile
-    [colspan]="1"
-    [rowspan]="1">
-    <div class="total-money-content" >
-        <mat-card appearance="outlined" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)" >
-            <mat-card-content style="font-size: 25px;">Total Balance: ${{overallMoney[0].totalBalance}} </mat-card-content>
-        </mat-card>
-    </div>
-    
-    </mat-grid-tile>
-
-    <mat-grid-tile
-    [colspan]="1"
-    [rowspan]="1">
-    <div class="total-money-content" >
-        <mat-card appearance="outlined" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)">
-            <mat-card-content style="font-size: 25px;">Salery (Bi-Weekly): ${{overallMoney[0].salery}}</mat-card-content>
-        </mat-card>
-    </div>
-    </mat-grid-tile>
-
-    <mat-grid-tile
-    [colspan]="1"
-    [rowspan]="1">
-    <div class="total-money-content" >
-        <mat-card appearance="outlined" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)">
-            <mat-card-content style="font-size: 25px;">Total Spent: ${{overallMoney[0].totalSpent}}</mat-card-content>
-        </mat-card>
-    </div>
-    </mat-grid-tile>
-
-    <mat-grid-tile
-    [colspan]="1"
-    [rowspan]="1"
-    [style.background]="'lightgreen'">graph*
-    </mat-grid-tile>
-
-    <mat-grid-tile
-    [colspan]="1"
-    [rowspan]="6">
-    <div class="tile-content">
-        <app-category></app-category>
       </div>
-    </mat-grid-tile>
+  
+      <!-- Second Column: Nested Grid -->
+      <div class="col-8" >
+        <div class="grid">
+  
+          <!-- Cards Row -->
+          <div class="col-4">
+            <div class="text-center p-3 border-round-sm  font-bold">
+              <mat-card appearance="outlined" class="shadow-4" style="height: 6rem; width: 100%; display: flex; justify-content: center; align-items: center;">
+                <mat-card-header style="padding-bottom: 1rem;">
+                  <mat-card-title>Total Balance</mat-card-title>
+                </mat-card-header>
+                <mat-card-content style="font-size: 25px;">
+                  {{budget.totalBalance | currency: 'USD'}}
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="text-center p-3 border-round-sm  font-bold">
+              <mat-card appearance="outlined" class="shadow-4" style="height: 6rem; width: 100%; display: flex; justify-content: center; align-items: center;">
+                <mat-card-header style="padding-bottom: 1rem;">
+                  <mat-card-title>Salary ({{budget.payPeriod}})</mat-card-title>
+                </mat-card-header>
+                <mat-card-content style="font-size: 25px;">{{budget.salary | currency: 'USD'}}</mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="text-center p-3 border-round-sm  font-bold">
+              <mat-card appearance="outlined" class="shadow-4" style="height: 6rem; width: 100%; display: flex; justify-content: center; align-items: center;">
+                <mat-card-header style="padding-bottom: 1rem;">
+                  <mat-card-title>After Expense</mat-card-title>
+                </mat-card-header>
+                <mat-card-content style="font-size: 25px;">{{budget.afterExpense | currency: 'USD'}}</mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+  
+                  <!-- Transaction History -->
+                  <div class="col-12" style="height: calc(100vh - 210px);">
+                    <div class="text-center p-2 border-round-sm font-bold" style="flex: 1; height: 100%;">
+                      <app-transaction-history></app-transaction-history>
+                    </div>
+                  </div>
+  
+        </div>
 
-    <mat-grid-tile
-    [colspan]="2"
-    [rowspan]="6">
-    <div class="tile-content">
-        <app-transaction-history/>
-    </div>
-    </mat-grid-tile>
-    
-</mat-grid-list> -->
+      </div>
+  
+    } @else {
+      loading...
+    }
+  </div>
+  
+
+
+
+
+
+
+
+
