@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 //import { BudgetFirebaseSerice } from '../service/budgetFirebase.service';
 import { BudgetService } from '../service/budget.service';
 import { HttpClientModule } from '@angular/common/http';
+import { NavbarComponent } from "../navbar/navbar.component";
 
 
 export interface Tile {
@@ -21,7 +22,7 @@ export interface Tile {
 @Component({
   selector: 'app-main-display',
   standalone: true,
-  imports: [MatGridListModule, CategoryComponent, TransactionHistoryComponent, MatCardModule, CommonModule, HttpClientModule ],
+  imports: [MatGridListModule, CategoryComponent, TransactionHistoryComponent, MatCardModule, CommonModule, HttpClientModule, NavbarComponent],
   templateUrl: './main-display.component.html',
   styleUrl: './main-display.component.css'
 })
