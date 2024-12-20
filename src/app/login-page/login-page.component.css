@@ -1,11 +1,12 @@
 .login-container {
-    max-width: 400px;
+    max-width: 500px;
     margin: auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
-    text-align: center;
+    /* text-align: center; */
+
   }
   
   form div {
@@ -21,6 +22,8 @@
   }
   
   button {
+    width: 100%;
+    justify-content: center;
     padding: 10px 20px;
     background-color: #007bff;
     color: white;

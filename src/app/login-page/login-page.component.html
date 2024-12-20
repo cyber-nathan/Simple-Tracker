@@ -9,6 +9,15 @@
         <label for="password">Password:</label>
         <input id="password" type="password" [(ngModel)]="password" name="password" required />
       </div>
+
+			<div style="display: flex; justify-content:space-between; margin: 16px;">
+				<div style="display: flex; align-items: center;">
+					<input type="checkbox" id="remember" style="height: 16px; width: 16px;" checked>
+					<label for="remember" class="ml-2 ">Remember me</label>
+				</div>
+				<a href="#">
+          Create Account</a>
+			</div>
       <button type="submit">Login</button>
     </form>
-  </div>
+  </div> 
